@@ -46,6 +46,7 @@
                   v-bind="attrs"
                   v-on="on"
                   :disabled="updateLoading"
+                  data-cy="delete-btn"
                 >
                   Delete Profile
                 </yr-btn>
@@ -62,7 +63,12 @@
 
                 <template #actions>
                   <v-spacer></v-spacer>
-                  <yr-btn text :disabled="deleteLoading" @click="deleteDialog = false">
+                  <yr-btn
+                    text
+                    :disabled="deleteLoading"
+                    @click="deleteDialog = false"
+                    data-cy="cancel-delete-btn"
+                  >
                     Cancel
                   </yr-btn>
                   <yr-btn
@@ -71,6 +77,7 @@
                     :loading="deleteLoading"
                     text
                     @click="deleteAct"
+                    data-cy="confirm-delete-btn"
                   >
                     Delete
                   </yr-btn>

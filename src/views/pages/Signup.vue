@@ -9,6 +9,7 @@
           hint="*required"
           required
           :rules="form.rules.lastname"
+          data-cy="firstname-input"
         ></yr-text-field>
         <yr-text-field
           v-model="form.fields.lastname"
@@ -17,6 +18,7 @@
           hint="*required"
           required
           :rules="form.rules.lastname"
+          data-cy="lastname-input"
         ></yr-text-field>
         <yr-text-field
           v-model="form.fields.username"
@@ -25,12 +27,14 @@
           hint="*required"
           required
           :rules="form.rules.username"
+          data-cy="username-input"
         ></yr-text-field>
         <yr-password-field
           v-model="form.fields.password"
           label="Password"
           no-prepend-icon="true"
           :rules="form.rules.password"
+          data-cy="password-input"
         ></yr-password-field>
         <yr-password-field
           v-model="form.fields.confirmPassword"
@@ -38,6 +42,7 @@
           no-prepend-icon="true"
           :rules="form.rules.confirmPassword"
           @enter="register"
+          data-cy="confirmpassword-input"
         ></yr-password-field>
         <div class="text-center">
           <yr-btn
@@ -46,6 +51,7 @@
             :loading="loading"
             @keyup.enter="register"
             @click="register"
+            data-cy="signup-btn"
           >
             Sign up
           </yr-btn>

@@ -1,3 +1,15 @@
 {
-  "pluginsFile": "tests/e2e/plugins/index.js"
+  "pluginsFile": "tests/e2e/plugins/index.js",
+  "testFiles": [
+    "user/signup.spec.ts",
+    "user/logout.spec.ts",
+    "user/authenticate.spec.ts",
+    "user/delete.spec.ts"
+  ],
+  "env": {
+    "firstname": "Cypress",
+    "lastname": "Tester",
+    "username": "cytester",
+    "password": "CyTester12345"
+  }
 }

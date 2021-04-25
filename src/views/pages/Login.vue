@@ -34,8 +34,9 @@
 
     <template #footer>
       <v-spacer></v-spacer>
-      <span class="caption"
-        >Don't have an account yet? <router-link to="/signup">Sign up here</router-link>.
+      <span class="caption">
+        Don't have an account yet?
+        <router-link to="/signup" data-cy="to-signup-link">Sign up here</router-link>.
       </span>
       <v-spacer></v-spacer>
     </template>
