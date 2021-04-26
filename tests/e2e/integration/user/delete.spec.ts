@@ -1,6 +1,6 @@
-describe('Logout', () => {
+describe('Delete', () => {
   beforeEach(() => {
-    //login before each test
+    //login before tests
     cy.visit('/login')
     cy.get('[data-cy="username-input"]').type(Cypress.env('username'))
     cy.get('[data-cy="password-input"]').type(Cypress.env('password'))
@@ -16,7 +16,9 @@ describe('Logout', () => {
 
   it('successfully deletes own user', () => {
     cy.get('[data-cy="delete-btn"]').click()
+
     cy.get('[data-cy="confirm-delete-btn"]').click()
+
     cy.location('pathname', { timeout: 2000 }).should('eq', '/')
   })
 })

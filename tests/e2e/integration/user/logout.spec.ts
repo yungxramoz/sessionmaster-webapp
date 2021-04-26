@@ -14,7 +14,9 @@ describe('Logout', () => {
 
   it('successfully logs out', () => {
     cy.get('[data-cy="logout-btn"]').click()
-    cy.get('[data-cy="to-logout-btn"]').click()
+    cy.get('[data-cy="to-logout-btn"]')
+      .click()
+      .should('be.disabled')
 
     //wait for the fake loader to be completed (1500)
     cy.location('pathname', { timeout: 2000 }).should('eq', '/')
