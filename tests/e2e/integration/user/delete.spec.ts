@@ -5,6 +5,7 @@ describe('Delete', () => {
     cy.get('[data-cy="username-input"]').type(Cypress.env('username'))
     cy.get('[data-cy="password-input"]').type(Cypress.env('password'))
     cy.get('[data-cy="login-btn"]').click()
+    cy.location('pathname', { timeout: 6000 }).should('eq', '/users')
     cy.visit('/profile')
   })
 
@@ -17,8 +18,10 @@ describe('Delete', () => {
   it('successfully deletes own user', () => {
     cy.get('[data-cy="delete-btn"]').click()
 
-    cy.get('[data-cy="confirm-delete-btn"]').click()
+    cy.get('[data-cy="confirm-delete-btn"]')
+      .click()
+      .should('be.disabled')
 
-    cy.location('pathname', { timeout: 2000 }).should('eq', '/')
+    cy.location('pathname', { timeout: 6000 }).should('eq', '/')
   })
 })

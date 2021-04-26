@@ -10,7 +10,9 @@ describe('Authentication', () => {
       .type(Cypress.env('password'))
       .should('have.value', Cypress.env('password'))
 
-    cy.get('[data-cy="login-btn"]').click()
+    cy.get('[data-cy="login-btn"]')
+      .click()
+      .should('be.disabled')
 
     cy.location('pathname', { timeout: 60000 }).should('eq', '/users')
   })
