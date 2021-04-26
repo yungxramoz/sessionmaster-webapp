@@ -79,7 +79,7 @@
           <span>Users</span>
           <v-icon>mdi-account-group</v-icon>
         </v-btn>
-        <v-btn to="profile">
+        <v-btn to="profile" data-cy="to-profile-btn">
           <span>Profile</span>
           <v-icon>mdi-account</v-icon>
         </v-btn>

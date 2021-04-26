@@ -14,6 +14,7 @@
           hint="*required"
           required
           :rules="form.rules.lastname"
+          data-cy="firstname-input"
         ></yr-text-field>
         <yr-text-field
           v-model="form.fields.lastname"
@@ -22,6 +23,7 @@
           hint="*required"
           required
           :rules="form.rules.lastname"
+          data-cy="lastname-input"
         ></yr-text-field>
         <yr-text-field
           v-model="form.fields.username"
@@ -30,6 +32,7 @@
           hint="*required"
           required
           :rules="form.rules.username"
+          data-cy="username-input"
         ></yr-text-field>
         <v-row>
           <v-col class="text-right">
@@ -85,7 +88,12 @@
               </yr-dialog-card>
             </v-dialog>
 
-            <yr-btn :disabled="!updateEnabled" :loading="updateLoading" @click="update">
+            <yr-btn
+              :disabled="!updateEnabled"
+              :loading="updateLoading"
+              @click="update"
+              data-cy="update-btn"
+            >
               Update
             </yr-btn>
           </v-col>
