@@ -1,104 +1,161 @@
 <template>
   <yr-form title="Profile" :message="message" :messageType="messageType">
     <template #form>
-      <v-form
-        ref="profileForm"
-        v-model="form.valid"
-        lazy-validation
-        :disabled="updateLoading || deleteLoading"
-      >
-        <yr-text-field
-          v-model="form.fields.firstname"
-          label="Firstname"
-          counter="50"
-          hint="*required"
-          required
-          :rules="form.rules.lastname"
-          data-cy="firstname-input"
-        ></yr-text-field>
-        <yr-text-field
-          v-model="form.fields.lastname"
-          label="Lastname"
-          counter="50"
-          hint="*required"
-          required
-          :rules="form.rules.lastname"
-          data-cy="lastname-input"
-        ></yr-text-field>
-        <yr-text-field
-          v-model="form.fields.username"
-          label="Username"
-          counter="20"
-          hint="*required"
-          required
-          :rules="form.rules.username"
-          data-cy="username-input"
-        ></yr-text-field>
-        <v-row>
-          <v-col class="text-right">
-            <v-dialog
-              v-model="deleteDialog"
-              max-width="500px"
-              :persistent="deleteLoading"
-              retain-focus
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <yr-btn
-                  color="error"
-                  class="mr-4"
-                  v-bind="attrs"
-                  v-on="on"
-                  :disabled="updateLoading"
-                  data-cy="delete-btn"
+      <div class="text-center pb-6">
+        <v-avatar size="110" color="grey lighten-2">
+          <v-icon size="100">
+            mdi-account-circle
+          </v-icon>
+        </v-avatar>
+      </div>
+      <v-tabs grow color="accent">
+        <v-tab>
+          <v-icon left>
+            mdi-account-details
+          </v-icon>
+          Profile
+        </v-tab>
+        <v-tab-item key="profile">
+          <v-form
+            class="pt-6"
+            ref="profileForm"
+            v-model="form.valid"
+            lazy-validation
+            :disabled="updateLoading || deleteLoading"
+          >
+            <yr-text-field
+              v-model="form.fields.firstname"
+              label="Firstname"
+              counter="50"
+              hint="*required"
+              required
+              :rules="form.rules.lastname"
+              data-cy="firstname-input"
+            ></yr-text-field>
+            <yr-text-field
+              v-model="form.fields.lastname"
+              label="Lastname"
+              counter="50"
+              hint="*required"
+              required
+              :rules="form.rules.lastname"
+              data-cy="lastname-input"
+            ></yr-text-field>
+            <yr-text-field
+              v-model="form.fields.username"
+              label="Username"
+              counter="20"
+              hint="*required"
+              required
+              :rules="form.rules.username"
+              data-cy="username-input"
+            ></yr-text-field>
+            <v-row>
+              <v-col class="text-right">
+                <v-dialog
+                  v-model="deleteDialog"
+                  max-width="500px"
+                  :persistent="deleteLoading"
+                  retain-focus
                 >
-                  Delete Profile
+                  <template v-slot:activator="{ on, attrs }">
+                    <yr-btn
+                      color="error"
+                      class="mr-4"
+                      v-bind="attrs"
+                      v-on="on"
+                      :disabled="updateLoading"
+                      data-cy="delete-btn"
+                    >
+                      Delete Profile
+                    </yr-btn>
+                  </template>
+
+                  <yr-dialog-card>
+                    <template #title>
+                      Delete Action
+                    </template>
+
+                    <template #content>
+                      Are you sure you want to delete Your Profile?
+                    </template>
+
+                    <template #actions>
+                      <v-spacer></v-spacer>
+                      <yr-btn
+                        text
+                        :disabled="deleteLoading"
+                        @click="deleteDialog = false"
+                        data-cy="cancel-delete-btn"
+                      >
+                        Cancel
+                      </yr-btn>
+                      <yr-btn
+                        color="error"
+                        :disabled="deleteLoading"
+                        :loading="deleteLoading"
+                        text
+                        @click="deleteAct"
+                        data-cy="confirm-delete-btn"
+                      >
+                        Delete
+                      </yr-btn>
+                    </template>
+                  </yr-dialog-card>
+                </v-dialog>
+
+                <yr-btn
+                  :disabled="!updateEnabled"
+                  :loading="updateLoading"
+                  @click="update"
+                  data-cy="update-btn"
+                >
+                  Update
                 </yr-btn>
-              </template>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-tab-item>
 
-              <yr-dialog-card>
-                <template #title>
-                  Delete Action
-                </template>
-
-                <template #content>
-                  Are you sure you want to delete Your Profile?
-                </template>
-
-                <template #actions>
-                  <v-spacer></v-spacer>
-                  <yr-btn
-                    text
-                    :disabled="deleteLoading"
-                    @click="deleteDialog = false"
-                    data-cy="cancel-delete-btn"
-                  >
-                    Cancel
-                  </yr-btn>
-                  <yr-btn
-                    color="error"
-                    :disabled="deleteLoading"
-                    :loading="deleteLoading"
-                    text
-                    @click="deleteAct"
-                    data-cy="confirm-delete-btn"
-                  >
-                    Delete
-                  </yr-btn>
-                </template>
-              </yr-dialog-card>
-            </v-dialog>
-
-            <yr-btn
-              :disabled="!updateEnabled"
-              :loading="updateLoading"
-              @click="update"
-              data-cy="update-btn"
-            >
-              Update
-            </yr-btn>
-          </v-col>
-        </v-row>
-      </v-form>
+        <v-tab>
+          <v-icon left>
+            mdi-lock
+          </v-icon>
+          Password
+        </v-tab>
+        <v-tab-item key="rare">
+          <v-form
+            class="pt-6"
+            ref="profileForm"
+            v-model="form.valid"
+            lazy-validation
+            :disabled="updateLoading || deleteLoading"
+          >
+            <yr-password-field
+              label="Password"
+              no-prepend-icon="true"
+              data-cy="password-input"
+            ></yr-password-field>
+            <yr-password-field
+              label="New Password"
+              no-prepend-icon="true"
+              data-cy="new-password-input"
+            ></yr-password-field>
+            <yr-password-field
+              label="Confirm New Password"
+              no-prepend-icon="true"
+              data-cy="confirmpassword-input"
+            ></yr-password-field>
+            <v-row>
+              <v-col class="text-right">
+                <yr-btn>
+                  Update
+                </yr-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-tab-item>
+      </v-tabs>
     </template>
   </yr-form>
 </template>
