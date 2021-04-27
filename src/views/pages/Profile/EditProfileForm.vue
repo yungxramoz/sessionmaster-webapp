@@ -1,35 +1,105 @@
 <template>
-  <yr-form title="Profile" :message="message" :messageType="messageType">
+  <yr-form :message="message" :messageType="messageType">
     <template #form>
-      <div class="text-center pb-6">
-        <v-avatar size="110" color="grey lighten-2">
-          <v-icon size="100">
-            mdi-account-circle
-          </v-icon>
-        </v-avatar>
-      </div>
-      <yr-tabs>
-        <yr-icon-text-tab
-          title="Profile"
-          icon="mdi-account-details"
-          href="#editProfile"
-          data-cy="edit-profile-tab"
-        />
-        <yr-icon-text-tab
-          title="Password"
-          icon="mdi-lock"
-          href="#editPassword"
-          data-cy="edit-password-tab"
-        />
+      <v-form
+        class="pt-6"
+        ref="profileForm"
+        v-model="form.valid"
+        lazy-validation
+        :disabled="updateLoading || deleteLoading"
+      >
+        <yr-text-field
+          v-model="form.fields.firstname"
+          label="Firstname"
+          counter="50"
+          hint="*required"
+          required
+          :rules="form.rules.lastname"
+          data-cy="firstname-input"
+        ></yr-text-field>
+        <yr-text-field
+          v-model="form.fields.lastname"
+          label="Lastname"
+          counter="50"
+          hint="*required"
+          required
+          :rules="form.rules.lastname"
+          data-cy="lastname-input"
+        ></yr-text-field>
+        <yr-text-field
+          v-model="form.fields.username"
+          label="Username"
+          counter="20"
+          hint="*required"
+          required
+          :rules="form.rules.username"
+          data-cy="username-input"
+        ></yr-text-field>
+        <v-row>
+          <v-col class="text-right">
+            <v-dialog
+              v-model="deleteDialog"
+              max-width="500px"
+              :persistent="deleteLoading"
+              retain-focus
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <yr-btn
+                  color="error"
+                  class="mr-4"
+                  v-bind="attrs"
+                  v-on="on"
+                  :disabled="updateLoading"
+                  data-cy="delete-btn"
+                >
+                  Delete Profile
+                </yr-btn>
+              </template>
 
-        <v-tab-item value="editProfile">
-          <edit-profile-form />
-        </v-tab-item>
+              <yr-dialog-card>
+                <template #title>
+                  Delete Action
+                </template>
 
-        <v-tab-item value="editPassword">
-          <edit-password-form />
-        </v-tab-item>
-      </yr-tabs>
+                <template #content>
+                  Are you sure you want to delete your profile?
+                </template>
+
+                <template #actions>
+                  <v-spacer></v-spacer>
+                  <yr-btn
+                    text
+                    :disabled="deleteLoading"
+                    @click="deleteDialog = false"
+                    data-cy="cancel-delete-btn"
+                  >
+                    Cancel
+                  </yr-btn>
+                  <yr-btn
+                    color="error"
+                    :disabled="deleteLoading"
+                    :loading="deleteLoading"
+                    text
+                    @click="deleteAct"
+                    data-cy="confirm-delete-btn"
+                  >
+                    Delete
+                  </yr-btn>
+                </template>
+              </yr-dialog-card>
+            </v-dialog>
+
+            <yr-btn
+              :disabled="!updateEnabled"
+              :loading="updateLoading"
+              @click="update"
+              data-cy="update-btn"
+            >
+              Update
+            </yr-btn>
+          </v-col>
+        </v-row>
+      </v-form>
     </template>
   </yr-form>
 </template>
@@ -49,9 +119,6 @@ import { VForm } from '@/models/types'
 import { UpdateUserModel, UserModel } from '@/models/data/user'
 import FormDefinition from '@/models/form-definition'
 
-import EditProfileForm from './EditProfileForm.vue'
-import EditPasswordForm from './EditPasswordForm.vue'
-
 interface Form extends FormDefinition {
   valid: false
   fields: UpdateUserModel
@@ -59,17 +126,11 @@ interface Form extends FormDefinition {
     firstname: InputValidationRule[]
     lastname: InputValidationRule[]
     username: InputValidationRule[]
-    password: InputValidationRule[]
   }
 }
 
-@Component({
-  components: {
-    EditProfileForm,
-    EditPasswordForm,
-  },
-})
-export default class Profile extends Vue {
+@Component
+export default class EditProfileForm extends Vue {
   @Ref() readonly profileForm!: VForm
 
   private form: Form = {
@@ -78,7 +139,6 @@ export default class Profile extends Vue {
       firstname: '',
       lastname: '',
       username: '',
-      password: '',
     },
   }
   private updateLoading: boolean = false
@@ -95,7 +155,6 @@ export default class Profile extends Vue {
       firstname: [requiredRule(), maxCharRule(50)],
       lastname: [requiredRule(), maxCharRule(50)],
       username: [requiredRule(), maxCharRule(20)],
-      password: [requiredRule(), minCharRule(8), passwordRule()],
     }
 
     this.updateLoading = true
@@ -140,6 +199,8 @@ export default class Profile extends Vue {
         .update(updateData)
         .then(
           (response: UpdateUserModel) => {
+            this.message = 'Successfully updated profile'
+            this.messageType = 'success'
             this.form.fields = cloneSource(response)
           },
           (error: string) => {

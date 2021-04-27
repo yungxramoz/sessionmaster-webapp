@@ -1,5 +1,5 @@
 <template>
-  <v-tab>
+  <v-tab :href="href" :data-cy="dataCy">
     <v-icon left>
       {{ icon }}
     </v-icon>
@@ -8,13 +8,13 @@
 </template>
 
 <script lang="ts">
-import { VTab } from 'vuetify/lib'
-
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
-export default class YrIconTextTab extends VTab {
+export default class YrIconTextTab extends Vue {
   @Prop() title?: string
   @Prop() icon?: string
+  @Prop() href?: string
+  @Prop() dataCy?: string
 }
 </script>

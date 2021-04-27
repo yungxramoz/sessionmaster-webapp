@@ -82,8 +82,6 @@ import { VForm } from '@/models/types'
 import { RegistrationModel } from '@/models/data/user'
 import FormDefinition from '@/models/form-definition'
 
-import { YrForm } from '@/components'
-
 interface Form extends FormDefinition {
   valid: false
   fields: RegistrationModel & {
@@ -98,11 +96,7 @@ interface Form extends FormDefinition {
   }
 }
 
-@Component({
-  components: {
-    YrForm,
-  },
-})
+@Component
 export default class Signup extends Vue {
   @Ref() readonly signupForm!: VForm
 
