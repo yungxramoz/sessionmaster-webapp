@@ -4,7 +4,8 @@
     "user/signup.spec.ts",
     "user/logout.spec.ts",
     "user/authenticate.spec.ts",
-    "user/update.spec.ts",
+    "user/update-profile.spec.ts",
+    "user/update-password.spec.ts",
     "user/delete.spec.ts"
   ],
   "env": {

@@ -1,4 +1,4 @@
-describe('Update', () => {
+describe('Update profile', () => {
   beforeEach(() => {
     //login before each test
     cy.visit('/login')
@@ -9,28 +9,25 @@ describe('Update', () => {
 
     cy.get('[data-cy="to-profile-btn"]').click()
     cy.location('pathname', { timeout: 2000 }).should('eq', '/profile')
+
+    cy.get('[data-cy="edit-profile-tab"]').should('have.class', 'v-tab--active')
   })
 
   after(() => {
+    // reset profile
     cy.get('[data-cy="firstname-input"]')
       .clear()
       .type(Cypress.env('firstname'))
-      .should('have.value', Cypress.env('firstname'))
 
     cy.get('[data-cy="lastname-input"]')
       .clear()
       .type(Cypress.env('lastname'))
-      .should('have.value', Cypress.env('lastname'))
 
     cy.get('[data-cy="username-input"]')
       .clear()
       .type(Cypress.env('username'))
-      .should('have.value', Cypress.env('username'))
 
-    cy.get('[data-cy="update-btn"]')
-      .should('be.enabled')
-      .click()
-      .should('be.disabled')
+    cy.get('[data-cy="update-profile-btn"]').click()
   })
 
   it('updates firstname', () => {
@@ -38,10 +35,14 @@ describe('Update', () => {
       .type(' Updated')
       .should('have.value', Cypress.env('firstname') + ' Updated')
 
-    cy.get('[data-cy="update-btn"]')
+    cy.get('[data-cy="update-profile-btn"]')
       .should('be.enabled')
       .click()
       .should('be.disabled')
+
+    cy.get('[data-cy="message-alert"]')
+      .should('have.class', 'success')
+      .contains('Successfully updated profile')
   })
 
   it('updates lastname', () => {
@@ -49,10 +50,14 @@ describe('Update', () => {
       .type(' Updated')
       .should('have.value', Cypress.env('lastname') + ' Updated')
 
-    cy.get('[data-cy="update-btn"]')
+    cy.get('[data-cy="update-profile-btn"]')
       .should('be.enabled')
       .click()
       .should('be.disabled')
+
+    cy.get('[data-cy="message-alert"]')
+      .should('have.class', 'success')
+      .contains('Successfully updated profile')
   })
 
   it('updates username', () => {
@@ -60,9 +65,13 @@ describe('Update', () => {
       .type('_updated')
       .should('have.value', Cypress.env('username') + '_updated')
 
-    cy.get('[data-cy="update-btn"]')
+    cy.get('[data-cy="update-profile-btn"]')
       .should('be.enabled')
       .click()
       .should('be.disabled')
+
+    cy.get('[data-cy="message-alert"]')
+      .should('have.class', 'success')
+      .contains('Successfully updated profile')
   })
 })
