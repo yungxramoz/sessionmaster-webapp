@@ -93,7 +93,7 @@
               :disabled="!updateEnabled"
               :loading="updateLoading"
               @click="update"
-              data-cy="update-btn"
+              data-cy="update-profile-btn"
             >
               Update
             </yr-btn>

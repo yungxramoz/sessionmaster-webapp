@@ -29,7 +29,7 @@
               :disabled="!updateEnabled"
               :loading="updateLoading"
               @click="update"
-              data-cy="update-btn"
+              data-cy="update-password-btn"
             >
               Update
             </yr-btn>
@@ -57,7 +57,7 @@ import FormDefinition from '@/models/form-definition'
 interface Form extends FormDefinition {
   valid: false
   fields: UpdateUserModel & {
-    confirmPassword: string
+    confirmPassword?: string
   }
   rules?: {
     password: InputValidationRule[]
@@ -121,7 +121,11 @@ export default class EditPasswordForm extends Vue {
           (_response: UpdateUserModel) => {
             this.message = 'Successfully updated password'
             this.messageType = 'success'
-            this.passwordForm.reset()
+
+            // this.passwordForm.reset() throws console errors on rules
+            this.form.fields.password = ''
+            this.form.fields.confirmPassword = ''
+            this.passwordForm.resetValidation()
           },
           (error: string) => {
             this.message = error
