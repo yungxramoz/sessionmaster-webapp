@@ -9,12 +9,7 @@
         </v-avatar>
       </div>
       <v-tabs grow color="accent">
-        <v-tab>
-          <v-icon left>
-            mdi-account-details
-          </v-icon>
-          Profile
-        </v-tab>
+        <yr-icon-text-tab title="Profile" icon="mdi-account-details" />
         <v-tab-item key="profile">
           <v-form
             class="pt-6"
@@ -117,12 +112,7 @@
           </v-form>
         </v-tab-item>
 
-        <v-tab>
-          <v-icon left>
-            mdi-lock
-          </v-icon>
-          Password
-        </v-tab>
+        <yr-icon-text-tab title="Password" icon="mdi-lock" />
         <v-tab-item key="rare">
           <v-form
             class="pt-6"
