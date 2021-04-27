@@ -5,10 +5,10 @@ import AuthModule from '@/store/modules/auth-module'
 import store from '@/store'
 import { getModule } from 'vuex-module-decorators'
 
-import Home from '@/views/pages/Home.vue'
-import Signup from '@/views/pages/Signup.vue'
-import Login from '@/views/pages/Login.vue'
-import NotFound from '@/views/pages/NotFound.vue'
+import Home from '@/views/pages/Home'
+import Signup from '@/views/pages/Signup'
+import Login from '@/views/pages/Login'
+import NotFound from '@/views/pages/NotFound'
 
 let auth: AuthModule = getModule(AuthModule, store)
 
@@ -47,7 +47,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import('../views/pages/Profile.vue'),
+    component: () => import('../views/pages/Profile'),
     meta: {
       requiresAuth: true,
     },

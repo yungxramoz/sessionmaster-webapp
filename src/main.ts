@@ -17,7 +17,7 @@ Vue.config.productionTip = false
 
 Vue.component('yr-text-field', YrTextField)
 Vue.component('yr-btn', YrBtn)
-Vue.component('yr-Tabs', YrTabs)
+Vue.component('yr-tabs', YrTabs)
 
 Vue.component('yr-password-field', YrPasswordField)
 Vue.component('yr-icon-btn', YrIconBtn)

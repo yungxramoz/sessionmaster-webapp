@@ -8,7 +8,7 @@
           </v-icon>
         </v-avatar>
       </div>
-      <v-tabs grow color="accent">
+      <yr-tabs>
         <yr-icon-text-tab title="Profile" icon="mdi-account-details" />
         <v-tab-item key="profile">
           <v-form
@@ -145,7 +145,7 @@
             </v-row>
           </v-form>
         </v-tab-item>
-      </v-tabs>
+      </yr-tabs>
     </template>
   </yr-form>
 </template>
