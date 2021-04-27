@@ -1,10 +1,12 @@
 import YrBtn from './atoms/YrBtn.vue'
 import YrTextField from './atoms/YrTextField.vue'
+import YrAppBar from './atoms/YrAppBar.vue'
 
 import YrPasswordField from './molecules/YrPasswordField.vue'
 import YrIconBtn from './molecules/YrIconBtn.vue'
+import YrForm from './molecules/YrForm.vue'
+import YrIconTextTab from './molecules/YrIconTextTab.vue'
 
-import YrAppBar from './templates/YrAppBar.vue'
-import YrForm from './templates/YrForm.vue'
+import YrTabs from './atoms/YrTabs.vue'
 
-export { YrBtn, YrTextField, YrPasswordField, YrIconBtn, YrAppBar, YrForm }
+export { YrBtn, YrTextField, YrAppBar, YrTabs, YrPasswordField, YrIconBtn, YrForm, YrIconTextTab }

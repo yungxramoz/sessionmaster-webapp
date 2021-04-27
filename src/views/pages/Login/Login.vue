@@ -56,8 +56,6 @@ import { VForm } from '@/models/types'
 import FormDefinition from '@/models/form-definition'
 import { AuthenticationModel } from '@/models/data/user'
 
-import { YrForm } from '@/components'
-
 interface Form extends FormDefinition {
   valid: false
   fields: AuthenticationModel
@@ -67,11 +65,7 @@ interface Form extends FormDefinition {
   }
 }
 
-@Component({
-  components: {
-    YrForm,
-  },
-})
+@Component
 export default class Login extends Vue {
   @Ref() readonly loginForm!: VForm
 

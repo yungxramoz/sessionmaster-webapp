@@ -1,7 +1,8 @@
 <template>
-  <yr-form title="Profile" :message="message" :messageType="messageType">
+  <yr-form :message="message" :messageType="messageType">
     <template #form>
       <v-form
+        class="pt-6"
         ref="profileForm"
         v-model="form.valid"
         lazy-validation
@@ -61,7 +62,7 @@
                 </template>
 
                 <template #content>
-                  Are you sure you want to delete Your Profile?
+                  Are you sure you want to delete your profile?
                 </template>
 
                 <template #actions>
@@ -92,7 +93,7 @@
               :disabled="!updateEnabled"
               :loading="updateLoading"
               @click="update"
-              data-cy="update-btn"
+              data-cy="update-profile-btn"
             >
               Update
             </yr-btn>
@@ -118,8 +119,6 @@ import { VForm } from '@/models/types'
 import { UpdateUserModel, UserModel } from '@/models/data/user'
 import FormDefinition from '@/models/form-definition'
 
-import { YrForm } from '@/components'
-
 interface Form extends FormDefinition {
   valid: false
   fields: UpdateUserModel
@@ -127,16 +126,11 @@ interface Form extends FormDefinition {
     firstname: InputValidationRule[]
     lastname: InputValidationRule[]
     username: InputValidationRule[]
-    password: InputValidationRule[]
   }
 }
 
-@Component({
-  components: {
-    YrForm,
-  },
-})
-export default class Profile extends Vue {
+@Component
+export default class EditProfileForm extends Vue {
   @Ref() readonly profileForm!: VForm
 
   private form: Form = {
@@ -145,7 +139,6 @@ export default class Profile extends Vue {
       firstname: '',
       lastname: '',
       username: '',
-      password: '',
     },
   }
   private updateLoading: boolean = false
@@ -162,7 +155,6 @@ export default class Profile extends Vue {
       firstname: [requiredRule(), maxCharRule(50)],
       lastname: [requiredRule(), maxCharRule(50)],
       username: [requiredRule(), maxCharRule(20)],
-      password: [requiredRule(), minCharRule(8), passwordRule()],
     }
 
     this.updateLoading = true
@@ -207,6 +199,8 @@ export default class Profile extends Vue {
         .update(updateData)
         .then(
           (response: UpdateUserModel) => {
+            this.message = 'Successfully updated profile'
+            this.messageType = 'success'
             this.form.fields = cloneSource(response)
           },
           (error: string) => {

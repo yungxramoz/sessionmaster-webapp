@@ -1,6 +1,6 @@
 <template>
   <v-container px-6 py-3>
-    <div class="text-center">
+    <div v-if="title" class="text-center">
       <h1 class="mb-5">{{ title }}</h1>
     </div>
 
@@ -15,8 +15,8 @@
       </v-row>
     </div>
 
-    <v-bottom-sheet :value="hasMessage" hide-overlay
-      ><v-alert class="ma-0 pa-6" border="top" :type="messageType" prominent>
+    <v-bottom-sheet :value="hasMessage" hide-overlay>
+      <v-alert class="ma-0 pa-6" border="top" :type="messageType" prominent data-cy="message-alert">
         {{ message }}
       </v-alert>
     </v-bottom-sheet>

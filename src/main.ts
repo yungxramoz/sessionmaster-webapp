@@ -9,8 +9,11 @@ import YrBtn from '@/components/atoms/YrBtn.vue'
 
 import YrPasswordField from '@/components/molecules/YrPasswordField.vue'
 import YrIconBtn from '@/components/molecules/YrIconBtn.vue'
+import YrDialogCard from '@/components/molecules/YrDialogCard.vue'
+import YrIconTextTab from '@/components/molecules/YrIconTextTab.vue'
+import YrForm from '@/components/molecules/YrForm.vue'
 
-import YrDialogCard from '@/components/templates/YrDialogCard.vue'
+import YrTabs from '@/components/atoms/YrTabs.vue'
 
 Vue.config.productionTip = false
 
@@ -19,8 +22,11 @@ Vue.component('yr-btn', YrBtn)
 
 Vue.component('yr-password-field', YrPasswordField)
 Vue.component('yr-icon-btn', YrIconBtn)
-
 Vue.component('yr-dialog-card', YrDialogCard)
+Vue.component('yr-icon-text-tab', YrIconTextTab)
+Vue.component('yr-form', YrForm)
+
+Vue.component('yr-tabs', YrTabs)
 
 new Vue({
   router,
