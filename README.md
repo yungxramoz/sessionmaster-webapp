@@ -1,3 +1,5 @@
+# WJ Projekt - Sandro Gerber
+
 - [WJ Projekt - Sandro Gerber](#wj-projekt---sandro-gerber)
   - [Planung](#planung)
     - [Projektidee](#projektidee)
@@ -11,10 +13,6 @@
       - [Atomic Design Concept](#atomic-design-concept)
       - [Extend Vuetify](#extend-vuetify)
   - [Fazit](#fazit)
-
----
-
-# WJ Projekt - Sandro Gerber
 
 ## Planung
 
