@@ -46,23 +46,22 @@
               <template v-slot:activator="{ on, attrs }">
                 <yr-btn
                   color="error"
-                  class="mr-4"
                   v-bind="attrs"
                   v-on="on"
                   :disabled="updateLoading"
                   data-cy="delete-btn"
                 >
-                  Delete Profile
+                  Delete
                 </yr-btn>
               </template>
 
               <yr-dialog-card>
                 <template #title>
-                  Delete Action
+                  Delete Profile
                 </template>
 
                 <template #content>
-                  Are you sure you want to delete your profile?
+                  Are you sure you want to delete your Session Master profile?
                 </template>
 
                 <template #actions>
@@ -90,6 +89,7 @@
             </v-dialog>
 
             <yr-btn
+              class="ml-3"
               :disabled="!updateEnabled"
               :loading="updateLoading"
               @click="update"
