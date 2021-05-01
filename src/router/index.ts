@@ -33,7 +33,7 @@ const routes: Array<RouteConfig> = [
     name: 'Signup',
     component: Signup,
     meta: {
-      guets: true,
+      guest: true,
     },
   },
   {
