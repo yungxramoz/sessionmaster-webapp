@@ -4,7 +4,7 @@ import { UserModel, UpdateUserModel } from '@/models/data/user'
 
 import authHeader from './auth-header'
 
-const API_URL = process.env.VUE_APP_BASE_API_URL + 'User/'
+const API_URL = process.env.VUE_APP_BASE_API_URL + 'users/'
 
 class UserService {
   getUsers(): Promise<UserModel[]> {

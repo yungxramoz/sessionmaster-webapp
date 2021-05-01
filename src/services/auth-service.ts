@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 
 import { AuthenticationModel, RegistrationModel, UserModel } from '@/models/data/user'
 
-const API_URL = process.env.VUE_APP_BASE_API_URL + 'User/'
+const API_URL = process.env.VUE_APP_BASE_API_URL + 'users/'
 
 class AuthService {
   login(authData: AuthenticationModel): Promise<UserModel> {
