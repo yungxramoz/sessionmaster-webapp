@@ -7,7 +7,7 @@ import BoardGameState from '@/models/state/boardgame-state'
 
 import { promiseErrorHandler } from '@/helpers/promise-error-handler'
 
-@Module({ namespaced: true, name: 'user' })
+@Module({ namespaced: true, name: 'boardgame' })
 class BoardGameModule extends VuexModule {
   public boardGameState: BoardGameState = {
     usersCollection: null,
