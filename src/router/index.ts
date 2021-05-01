@@ -53,6 +53,14 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/collection',
+    name: 'Collection',
+    component: () => import('../views/pages/Collection'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: '*',
     name: 'NotFound',
     component: NotFound,

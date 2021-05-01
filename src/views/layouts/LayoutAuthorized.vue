@@ -79,6 +79,10 @@
           <span>Users</span>
           <v-icon>mdi-account-group</v-icon>
         </v-btn>
+        <v-btn to="collection" data-cy="to-collection-btn">
+          <span>Collection</span>
+          <v-icon>mdi-treasure-chest</v-icon>
+        </v-btn>
         <v-btn to="profile" data-cy="to-profile-btn">
           <span>Profile</span>
           <v-icon>mdi-account</v-icon>
