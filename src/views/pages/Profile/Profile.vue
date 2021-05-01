@@ -1,9 +1,9 @@
 <template>
-  <yr-form title="Profile" :message="message" :messageType="messageType">
+  <yr-form :message="message" :messageType="messageType">
     <template #form>
-      <div class="text-center pb-6">
-        <v-avatar size="110" color="grey lighten-2">
-          <v-icon size="100">
+      <div class="text-center py-6">
+        <v-avatar size="150" color="grey lighten-2">
+          <v-icon size="150">
             mdi-account-circle
           </v-icon>
         </v-avatar>
