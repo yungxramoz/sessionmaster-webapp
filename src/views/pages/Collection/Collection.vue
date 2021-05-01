@@ -1,13 +1,36 @@
 <template>
-  <div>
-    <h1>Collection Page</h1>
-    <span v-show="loadingCollection">loading...</span>
-    <ul v-show="!loadingCollection">
-      <li v-for="boardgame in collection" :key="boardgame.id">
-        {{ boardgame.name }}
-      </li>
-    </ul>
-  </div>
+  <v-container px-6 py-3>
+    <v-row no-gutters align="center">
+      <template v-if="!loadingCollection">
+        <v-col cols="4" class="text-center">
+          <yr-icon-btn fab tile text large-icon="true" data-cy="add-boardgame-btn">
+            mdi-plus
+          </yr-icon-btn>
+        </v-col>
+
+        <v-col
+          cols="4"
+          class="d-flex child-flex"
+          v-for="boardgame in collection"
+          :key="boardgame.id"
+        >
+          <v-img
+            class="ma-1"
+            contain
+            :aspect-ratio="1"
+            :src="boardgame.thumbUrl"
+            :lazy-src="boardgame.thumbUrl"
+          >
+            <template v-slot:placeholder>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+              </v-row>
+            </template>
+          </v-img>
+        </v-col>
+      </template>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
