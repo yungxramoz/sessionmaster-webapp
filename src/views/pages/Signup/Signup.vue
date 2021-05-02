@@ -41,7 +41,7 @@
           label="Confirm Password"
           no-prepend-icon="true"
           :rules="form.rules.confirmPassword"
-          @enter="register"
+          @keyup.enter="register"
           data-cy="confirmpassword-input"
         ></yr-password-field>
         <div class="text-center">

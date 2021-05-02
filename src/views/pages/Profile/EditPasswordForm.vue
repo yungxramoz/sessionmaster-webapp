@@ -20,7 +20,7 @@
           label="Confirm New Password"
           no-prepend-icon="true"
           :rules="form.rules.confirmPassword"
-          @enter="update"
+          @keyup.enter="update"
           data-cy="confirmpassword-input"
         ></yr-password-field>
         <v-row>
