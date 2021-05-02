@@ -3,9 +3,7 @@
     <v-row no-gutters align="center">
       <template v-if="!loadingCollection">
         <v-col cols="4" class="text-center">
-          <yr-icon-btn fab tile text large-icon="true" data-cy="add-boardgame-btn">
-            mdi-plus
-          </yr-icon-btn>
+          <add-board-game-btn />
         </v-col>
 
         <v-col
@@ -42,13 +40,21 @@ import BoardGameModule from '@/store/modules/boardgame-module'
 
 import { BoardGameModel } from '@/models/data/boardgame'
 
-@Component
+import AddBoardGameBtn from './AddBoardGameBtn.vue'
+
+@Component({
+  components: {
+    AddBoardGameBtn,
+  },
+})
 export default class Collection extends Vue {
   private loadingCollection: boolean = false
 
   private auth: AuthModule = getModule(AuthModule, this.$store)
   private boardGame: BoardGameModule = getModule(BoardGameModule, this.$store)
+
   created() {
+    this.loadingCollection = true
     this.boardGame
       .fetchCollection(this.auth.userId)
       .then(
