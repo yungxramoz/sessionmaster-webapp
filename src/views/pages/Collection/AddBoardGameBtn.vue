@@ -45,28 +45,30 @@
               >mdi-magnify</yr-icon-btn
             >
           </v-row>
-          <v-row align="center">
-            <v-col
-              cols="4"
-              class="d-flex child-flex"
-              v-for="boardgame in searchedBoardGames"
-              :key="'searched-' + boardgame.id"
-            >
-              <v-img
-                class="ma-1"
-                contain
-                :aspect-ratio="1"
-                :src="boardgame.thumbUrl"
-                :lazy-src="boardgame.thumbUrl"
-              >
-                <template v-slot:placeholder>
-                  <v-row class="fill-height ma-0" align="center" justify="center">
-                    <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                  </v-row>
-                </template>
-              </v-img>
-            </v-col>
-          </v-row>
+          <v-list class="pt-7">
+            <v-list-item v-for="boardgame in searchedBoardGames" :key="'searched-' + boardgame.id">
+              <v-list-item-avatar tile>
+                <v-img
+                  contain
+                  :aspect-ratio="1"
+                  :src="boardgame.thumbUrl"
+                  :lazy-src="boardgame.thumbUrl"
+                >
+                  <template v-slot:placeholder>
+                    <v-row class="fill-height ma-0" align="center" justify="center">
+                      <v-progress-circular
+                        indeterminate
+                        color="grey lighten-5"
+                      ></v-progress-circular>
+                    </v-row>
+                  </template>
+                </v-img>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title v-text="boardgame.name"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
         </v-container>
       </template>
     </yr-dialog-card>
