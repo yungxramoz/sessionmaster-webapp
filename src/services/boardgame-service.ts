@@ -44,9 +44,13 @@ class BoardGameService {
   }
 
   removeFromCollection(userId: string, boardGameId: string) {
-    return axios.delete(`${API_URL_COLLECTION}${userId}/boardgames/${boardGameId}`, {
-      headers: authHeader(),
-    })
+    return axios
+      .delete(`${API_URL_COLLECTION}${userId}/boardgames/${boardGameId}`, {
+        headers: authHeader(),
+      })
+      .then((response: AxiosResponse<BoardGameModel[]>) => {
+        return response.data
+      })
   }
 }
 

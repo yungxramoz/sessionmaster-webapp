@@ -133,7 +133,7 @@
 
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title>Decription:</v-list-item-title>
+                  <v-list-item-title class="mb-1">Description:</v-list-item-title>
                   <p v-html="details.description"></p>
                 </v-list-item-content>
               </v-list-item>

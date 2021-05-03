@@ -42,6 +42,14 @@ class BoardGameModule extends VuexModule {
   @Mutation
   public addToCollectionFailure(): void {}
 
+  @Mutation
+  public removeFromCollectionSuccess(collection: BoardGameModel[]): void {
+    this.boardGameState.usersCollection = collection
+  }
+
+  @Mutation
+  public removeFromCollectionFailure(): void {}
+
   @Action({ rawError: true })
   public fetchCollection(userId: string): Promise<any> {
     return BoardGameService.getCollection(userId).then(
@@ -80,6 +88,19 @@ class BoardGameModule extends VuexModule {
       },
       error => {
         return promiseErrorHandler(error, this.addToCollectionFailure)
+      }
+    )
+  }
+
+  @Action({ rawError: true })
+  public removeFromCollection(removeModel: { userId: string; boardGameId: string }): Promise<any> {
+    return BoardGameService.removeFromCollection(removeModel.userId, removeModel.boardGameId).then(
+      (boardGames: BoardGameModel[]) => {
+        this.removeFromCollectionSuccess(boardGames)
+        return Promise.resolve(boardGames)
+      },
+      error => {
+        return promiseErrorHandler(error, this.removeFromCollectionFailure)
       }
     )
   }
