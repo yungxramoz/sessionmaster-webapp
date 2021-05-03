@@ -139,7 +139,7 @@ export default class Signup extends Vue {
         .register(this.form.fields)
         .then(
           () => {
-            this.$router.push('/users')
+            this.$router.push('/collection')
           },
           error => {
             this.message = error

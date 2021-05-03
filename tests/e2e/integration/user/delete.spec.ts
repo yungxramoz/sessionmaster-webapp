@@ -5,7 +5,7 @@ describe('Delete', () => {
     cy.get('[data-cy="username-input"]').type(Cypress.env('username'))
     cy.get('[data-cy="password-input"]').type(Cypress.env('password'))
     cy.get('[data-cy="login-btn"]').click()
-    cy.location('pathname', { timeout: 6000 }).should('eq', '/users')
+    cy.location('pathname', { timeout: 6000 }).should('eq', '/collection')
     cy.visit('/profile')
   })
 

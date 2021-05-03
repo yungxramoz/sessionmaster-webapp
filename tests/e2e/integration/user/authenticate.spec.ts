@@ -14,6 +14,6 @@ describe('Authentication', () => {
       .click()
       .should('be.disabled')
 
-    cy.location('pathname', { timeout: 60000 }).should('eq', '/users')
+    cy.location('pathname', { timeout: 60000 }).should('eq', '/collection')
   })
 })

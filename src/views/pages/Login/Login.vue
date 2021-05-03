@@ -93,7 +93,7 @@ export default class Login extends Vue {
         .login(this.form.fields)
         .then(
           () => {
-            this.$router.push('/users')
+            this.$router.push('/collection')
           },
           error => {
             this.message = error
