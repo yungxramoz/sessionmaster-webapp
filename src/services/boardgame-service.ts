@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 
-import { BoardGameModel } from '@/models/data/boardgame'
+import { AddToCollectionModel, BoardGameModel } from '@/models/data/boardgame'
 
 import authHeader from './auth-header'
 
@@ -35,12 +35,12 @@ class BoardGameService {
       })
   }
 
-  addToCollection(userId: string, boardGameId: string) {
-    return axios.put(
-      `${API_URL_COLLECTION}${userId}/boardgames`,
-      { boardGameId },
-      { headers: authHeader() }
-    )
+  addToCollection(userId: string, boardGame: AddToCollectionModel) {
+    return axios
+      .post(`${API_URL_COLLECTION}${userId}/boardgames`, boardGame, { headers: authHeader() })
+      .then((response: AxiosResponse<BoardGameModel[]>) => {
+        return response.data
+      })
   }
 
   removeFromCollection(userId: string, boardGameId: string) {

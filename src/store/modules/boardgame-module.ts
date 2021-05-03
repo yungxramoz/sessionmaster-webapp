@@ -2,7 +2,7 @@ import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators'
 
 import BoardGameService from '@/services/boardgame-service'
 
-import { BoardGameModel } from '@/models/data/boardgame'
+import { BoardGameModel, AddToCollectionModel } from '@/models/data/boardgame'
 import BoardGameState from '@/models/state/boardgame-state'
 
 import { promiseErrorHandler } from '@/helpers/promise-error-handler'
@@ -34,6 +34,14 @@ class BoardGameModule extends VuexModule {
     this.boardGameState.boardGames = null
   }
 
+  @Mutation
+  public addToCollectionSuccess(collection: BoardGameModel[]): void {
+    this.boardGameState.usersCollection = collection
+  }
+
+  @Mutation
+  public addToCollectionFailure(): void {}
+
   @Action({ rawError: true })
   public fetchCollection(userId: string): Promise<any> {
     return BoardGameService.getCollection(userId).then(
@@ -56,6 +64,22 @@ class BoardGameModule extends VuexModule {
       },
       error => {
         return promiseErrorHandler(error, this.fetchBoardGamesFailure)
+      }
+    )
+  }
+
+  @Action({ rawError: true })
+  public addToCollection(addModel: { userId: string; boardGameId: string }): Promise<any> {
+    const boardGame: AddToCollectionModel = {
+      boardGameId: addModel.boardGameId,
+    }
+    return BoardGameService.addToCollection(addModel.userId, boardGame).then(
+      (boardGames: BoardGameModel[]) => {
+        this.addToCollectionSuccess(boardGames)
+        return Promise.resolve(boardGames)
+      },
+      error => {
+        return promiseErrorHandler(error, this.addToCollectionFailure)
       }
     )
   }

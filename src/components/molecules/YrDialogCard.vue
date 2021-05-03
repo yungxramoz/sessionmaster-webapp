@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title :class="headlineClass">
+    <v-card-title v-if="hasTitleSlot" :class="headlineClass">
       <slot name="title"></slot>
     </v-card-title>
 
@@ -29,6 +29,10 @@ export default class YrDialogCard extends Vue {
 
   get hasActionsSlot() {
     return !!this.$slots.actions
+  }
+
+  get hasTitleSlot() {
+    return !!this.$slots.title
   }
 }
 </script>
