@@ -37,14 +37,6 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/users',
-    name: 'Users',
-    component: () => import('../views/pages/Users.vue'),
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/pages/Profile'),
@@ -86,7 +78,7 @@ router.beforeEach((to, _from, next) => {
     if (!auth.isLoggedIn) {
       next()
     } else {
-      next('/users')
+      next('/collection')
     }
   } else {
     next()
