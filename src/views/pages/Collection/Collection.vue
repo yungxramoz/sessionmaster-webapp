@@ -60,9 +60,9 @@
 
                 <v-list-item-content>
                   <v-list-item-title>Player Count</v-list-item-title>
-                  <v-list-item-subtitle
-                    >{{ details.minPlayers }}-{{ details.maxPlayers }} Player</v-list-item-subtitle
-                  >
+                  <v-list-item-subtitle>
+                    {{ details.minPlayers }}-{{ details.maxPlayers }} Player
+                  </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
 
@@ -94,8 +94,8 @@
 
           <template #actions>
             <v-spacer></v-spacer>
-            <yr-btn text @click="detailsDialog = false" data-cy="cancel-remove-btn">
-              Cancel
+            <yr-btn text @click="detailsDialog = false" data-cy="close-remove-btn">
+              Close
             </yr-btn>
             <yr-btn
               color="error"

@@ -6,7 +6,7 @@ import AlertState from '@/models/state/alert-state'
 class AlertModule extends VuexModule {
   public alertState: AlertState = {
     message: '',
-    type: '',
+    type: 'info',
   }
 
   @Mutation
@@ -21,7 +21,7 @@ class AlertModule extends VuexModule {
 
   @Mutation
   public resetAlert(): void {
-    this.alertState.type = ''
+    this.alertState.type = 'info'
     this.alertState.message = ''
   }
 

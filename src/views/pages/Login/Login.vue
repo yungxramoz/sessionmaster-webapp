@@ -1,5 +1,5 @@
 <template>
-  <yr-form title="Login" :message="message" :messageType="messageType">
+  <yr-form title="Login">
     <template #form>
       <v-form ref="loginForm" v-model="form.valid" :disabled="loading">
         <yr-text-field
@@ -49,6 +49,7 @@ import { getModule } from 'vuex-module-decorators'
 import { InputValidationRule } from 'vuetify'
 
 import AuthModule from '@/store/modules/auth-module'
+import AlertModule from '@/store/modules/alert-module'
 
 import { requiredRule } from '@/helpers/form-rules'
 
@@ -80,15 +81,16 @@ export default class Login extends Vue {
       password: [requiredRule()],
     },
   }
+
   private loading: boolean = false
-  private message?: string = ''
-  private messageType?: string = 'info'
+
   private auth: AuthModule = getModule(AuthModule, this.$store)
+  private alert: AlertModule = getModule(AlertModule, this.$store)
 
   async login() {
     if (this.loginForm.validate()) {
       this.loading = true
-      this.message = ''
+      this.alert.reset()
       await this.auth
         .login(this.form.fields)
         .then(
@@ -96,8 +98,8 @@ export default class Login extends Vue {
             this.$router.push('/collection')
           },
           error => {
-            this.message = error
-            this.messageType = 'error'
+            this.alert.setMessage(error)
+            this.alert.setType('error')
           }
         )
         .finally(() => {

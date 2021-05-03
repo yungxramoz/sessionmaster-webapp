@@ -1,5 +1,5 @@
 <template>
-  <yr-form :message="message" :messageType="messageType">
+  <yr-form>
     <template #form>
       <div class="text-center py-6">
         <v-avatar size="130" color="grey lighten-2">
@@ -40,6 +40,7 @@ import { getModule } from 'vuex-module-decorators'
 import { InputValidationRule } from 'vuetify'
 
 import AuthModule from '@/store/modules/auth-module'
+import AlertModule from '@/store/modules/alert-module'
 import AccountModule from '@/store/modules/account-module'
 
 import { maxCharRule, minCharRule, passwordRule, requiredRule } from '@/helpers/form-rules'
@@ -84,10 +85,9 @@ export default class Profile extends Vue {
   private updateLoading: boolean = false
   private deleteLoading: boolean = false
   private deleteDialog: boolean = false
-  private message?: string = ''
-  private messageType?: string = 'info'
 
   private auth: AuthModule = getModule(AuthModule, this.$store)
+  private alert: AlertModule = getModule(AlertModule, this.$store)
   private account: AccountModule = getModule(AccountModule, this.$store)
 
   created() {
@@ -107,8 +107,8 @@ export default class Profile extends Vue {
           this.form.fields = cloneSource(response)
         },
         error => {
-          this.message = error
-          this.messageType = 'error'
+          this.alert.setMessage(error)
+          this.alert.setType('error')
         }
       )
       .finally(() => {
@@ -129,7 +129,7 @@ export default class Profile extends Vue {
   async update() {
     if (this.profileForm.validate()) {
       this.updateLoading = true
-      this.message = ''
+      this.alert.reset()
 
       const updateData = {
         id: this.auth.userId,
@@ -143,8 +143,8 @@ export default class Profile extends Vue {
             this.form.fields = cloneSource(response)
           },
           (error: string) => {
-            this.message = error
-            this.messageType = 'error'
+            this.alert.setMessage(error)
+            this.alert.setType('error')
           }
         )
         .finally(() => {
@@ -155,7 +155,7 @@ export default class Profile extends Vue {
 
   async deleteAct() {
     this.deleteLoading = true
-    this.message = ''
+    this.alert.reset()
 
     this.account
       .delete(this.auth.userId)
@@ -165,8 +165,8 @@ export default class Profile extends Vue {
           this.$router.push('/')
         },
         error => {
-          this.message = error
-          this.messageType = 'error'
+          this.alert.setMessage(error)
+          this.alert.setType('error')
         }
       )
       .finally(() => {

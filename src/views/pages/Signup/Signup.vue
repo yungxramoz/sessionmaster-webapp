@@ -1,5 +1,5 @@
 <template>
-  <yr-form title="Create new Account" :message="message" :messageType="messageType">
+  <yr-form title="Create new Account">
     <template #form>
       <v-form ref="signupForm" v-model="form.valid" lazy-validation :disabled="loading">
         <yr-text-field
@@ -75,6 +75,7 @@ import { getModule } from 'vuex-module-decorators'
 import { InputValidationRule } from 'vuetify'
 
 import AuthModule from '@/store/modules/auth-module'
+import AlertModule from '@/store/modules/alert-module'
 
 import { maxCharRule, minCharRule, passwordRule, requiredRule } from '@/helpers/form-rules'
 
@@ -111,9 +112,9 @@ export default class Signup extends Vue {
     },
   }
   private loading: boolean = false
-  private message?: string = ''
-  private messageType?: string = 'info'
+
   private auth: AuthModule = getModule(AuthModule, this.$store)
+  private alert: AlertModule = getModule(AlertModule, this.$store)
 
   beforeMount() {
     this.form.rules = {
@@ -134,7 +135,7 @@ export default class Signup extends Vue {
   async register() {
     if (this.signupForm.validate()) {
       this.loading = true
-      this.message = ''
+      this.alert.reset()
       await this.auth
         .register(this.form.fields)
         .then(
@@ -142,8 +143,8 @@ export default class Signup extends Vue {
             this.$router.push('/collection')
           },
           error => {
-            this.message = error
-            this.messageType = 'error'
+            this.alert.setMessage(error)
+            this.alert.setType('error')
           }
         )
         .finally(() => {

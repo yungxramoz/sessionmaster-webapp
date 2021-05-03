@@ -1,5 +1,5 @@
 <template>
-  <yr-form :message="message" :messageType="messageType">
+  <yr-form>
     <template #form>
       <v-form
         class="pt-6"
@@ -46,6 +46,7 @@ import { getModule } from 'vuex-module-decorators'
 import { InputValidationRule } from 'vuetify'
 
 import AuthModule from '@/store/modules/auth-module'
+import AlertModule from '@/store/modules/alert-module'
 import AccountModule from '@/store/modules/account-module'
 
 import { minCharRule, passwordRule, requiredRule } from '@/helpers/form-rules'
@@ -77,10 +78,9 @@ export default class EditPasswordForm extends Vue {
     },
   }
   private updateLoading: boolean = false
-  private message?: string = ''
-  private messageType?: string = 'info'
 
   private auth: AuthModule = getModule(AuthModule, this.$store)
+  private alert: AlertModule = getModule(AlertModule, this.$store)
   private account: AccountModule = getModule(AccountModule, this.$store)
 
   created() {
@@ -108,7 +108,7 @@ export default class EditPasswordForm extends Vue {
   async update() {
     if (this.passwordForm.validate()) {
       this.updateLoading = true
-      this.message = ''
+      this.alert.reset()
 
       const updateData = {
         id: this.auth.userId,
@@ -119,8 +119,8 @@ export default class EditPasswordForm extends Vue {
         .update(updateData)
         .then(
           (_response: UpdateUserModel) => {
-            this.message = 'Successfully updated password'
-            this.messageType = 'success'
+            this.alert.setMessage('Successfully updated password')
+            this.alert.setType('success')
 
             // this.passwordForm.reset() throws console errors on rules
             this.form.fields.password = ''
@@ -128,8 +128,8 @@ export default class EditPasswordForm extends Vue {
             this.passwordForm.resetValidation()
           },
           (error: string) => {
-            this.message = error
-            this.messageType = 'error'
+            this.alert.setMessage(error)
+            this.alert.setType('error')
           }
         )
         .finally(() => {
