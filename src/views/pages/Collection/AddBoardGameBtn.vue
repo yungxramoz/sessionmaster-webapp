@@ -2,6 +2,7 @@
   <div>
     <v-dialog
       v-model="addBoardGameDialog"
+      scrollable
       fullscreen
       hide-overlay
       transition="slide-x-reverse-transition"
@@ -24,6 +25,7 @@
           <yr-icon-btn color="white" @click="addBoardGameDialog = false">
             mdi-chevron-left
           </yr-icon-btn>
+          <span class="white--text ml-4"></span>
         </template>
 
         <template #content>
@@ -167,6 +169,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { getModule } from 'vuex-module-decorators'
 
 import AuthModule from '@/store/modules/auth-module'
+import AlertModule from '@/store/modules/alert-module'
 import BoardGameModule from '@/store/modules/boardgame-module'
 
 import { BoardGameModel } from '@/models/data/boardgame'
@@ -181,19 +184,23 @@ export default class AddBoardGameBtn extends Vue {
   private boardGameSearchValue: string = ''
 
   private auth: AuthModule = getModule(AuthModule, this.$store)
+  private alert: AlertModule = getModule(AlertModule, this.$store)
   private boardGame: BoardGameModule = getModule(BoardGameModule, this.$store)
 
   filterBoardGames(): void {
     this.loadingBoardGames = true
+    this.alert.reset()
     this.boardGame
       .fetchBoardGames(this.boardGameSearchValue)
       .then(
         (response: BoardGameModel[]) => {
-          //   this.form.fields = cloneSource(response)
+          if (response.length === 0) {
+            this.alert.setMessage('No board game found')
+          }
         },
         error => {
-          //   this.message = error
-          //   this.messageType = 'error'
+          this.alert.setMessage(error)
+          this.alert.setType('error')
         }
       )
       .finally(() => {
@@ -213,15 +220,18 @@ export default class AddBoardGameBtn extends Vue {
 
     if (userId && boardGameId) {
       this.loadingAdd = true
+      this.alert.reset()
       this.boardGame
         .addToCollection({ userId, boardGameId })
         .then(
           (response: BoardGameModel[]) => {
+            this.alert.setMessage('Added "' + this.details?.name + '" to your treasure!')
+            this.alert.setType('success')
             this.detailsDialog = false
           },
           error => {
-            //   this.message = error
-            //   this.messageType = 'error'
+            this.alert.setMessage(error)
+            this.alert.setType('error')
           }
         )
         .finally(() => {

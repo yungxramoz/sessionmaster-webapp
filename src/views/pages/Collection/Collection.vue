@@ -119,6 +119,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { getModule } from 'vuex-module-decorators'
 
 import AuthModule from '@/store/modules/auth-module'
+import AlertModule from '@/store/modules/alert-module'
 import BoardGameModule from '@/store/modules/boardgame-module'
 
 import { BoardGameModel } from '@/models/data/boardgame'
@@ -137,6 +138,7 @@ export default class Collection extends Vue {
   private detailsDialog: boolean = false
 
   private auth: AuthModule = getModule(AuthModule, this.$store)
+  private alert: AlertModule = getModule(AlertModule, this.$store)
   private boardGame: BoardGameModule = getModule(BoardGameModule, this.$store)
 
   created() {
@@ -145,11 +147,14 @@ export default class Collection extends Vue {
       .fetchCollection(this.auth.userId)
       .then(
         (response: BoardGameModel[]) => {
-          //   this.form.fields = cloneSource(response)
+          if (response.length === 0) {
+            this.alert.setMessage('Start collect your board games!')
+            this.alert.setType('info')
+          }
         },
         error => {
-          //   this.message = error
-          //   this.messageType = 'error'
+          this.alert.setMessage(error)
+          this.alert.setType('error')
         }
       )
       .finally(() => {
@@ -169,15 +174,18 @@ export default class Collection extends Vue {
 
     if (userId && boardGameId) {
       this.loadingRemove = true
+      this.alert.reset()
       this.boardGame
         .removeFromCollection({ userId, boardGameId })
         .then(
           (response: BoardGameModel[]) => {
             this.detailsDialog = false
+            this.alert.setMessage('Removed "' + this.details?.name + '" from your treasure!')
+            this.alert.setType('success')
           },
           error => {
-            //   this.message = error
-            //   this.messageType = 'error'
+            this.alert.setMessage(error)
+            this.alert.setType('error')
           }
         )
         .finally(() => {
