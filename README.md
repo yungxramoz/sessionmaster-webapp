@@ -1,29 +1,30 @@
-# sessionmaster-webapp
+# Session Master - Web App
 
-## Project setup
-```
-yarn install
-```
+- [Session Master - Web App](#session-master---web-app)
+  - [Technologies / Libraries](#technologies--libraries)
+  - [Mockups](#mockups)
+    - [Anonymous user](#anonymous-user)
+    - [Autheticated user](#autheticated-user)
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+## Technologies / Libraries
 
-### Compiles and minifies for production
-```
-yarn build
-```
+- Vue 2
+- TypeScript 4
+- Vuex 3
+- Vue Router
+- Vuetify
+- Vue Class based components:
+  - vue-class-component
+  - vue-class-decorator
+  - vuex-module-decorator
+- axios
 
-### Run your end-to-end tests
-```
-yarn test:e2e
-```
+## Mockups
 
-### Lints and fixes files
-```
-yarn lint
-```
+### Anonymous user
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![Mockup](/assets/anonymous-mockup.png)
+
+### Autheticated user
+
+![Mockup](/assets/auth-mockup.png)

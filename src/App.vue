@@ -5,6 +5,7 @@
         <router-view />
       </transition>
     </component>
+    <yr-bottom-sheet-alert />
   </v-app>
 </template>
 
@@ -17,10 +18,13 @@ import AuthModule from '@/store/modules/auth-module'
 import LayoutDefault from '@/views/layouts/LayoutDefault.vue'
 import LayoutAuthorized from '@/views/layouts/LayoutAuthorized.vue'
 
+import { YrBottomSheetAlert } from '@/components'
+
 @Component({
   components: {
     LayoutDefault,
     LayoutAuthorized,
+    YrBottomSheetAlert,
   },
 })
 export default class App extends Vue {

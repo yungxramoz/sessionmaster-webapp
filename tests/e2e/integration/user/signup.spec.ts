@@ -1,4 +1,4 @@
-describe('Sign Up', () => {
+describe('Sign up user', () => {
   it('successfully register test user', () => {
     cy.visit('/')
     cy.get('[data-cy="to-login-btn"]').click()
@@ -32,6 +32,6 @@ describe('Sign Up', () => {
       .click()
       .should('be.disabled')
 
-    cy.location('pathname', { timeout: 60000 }).should('eq', '/users')
+    cy.location('pathname', { timeout: 60000 }).should('eq', '/collection')
   })
 })

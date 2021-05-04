@@ -33,21 +33,21 @@ const routes: Array<RouteConfig> = [
     name: 'Signup',
     component: Signup,
     meta: {
-      guets: true,
-    },
-  },
-  {
-    path: '/users',
-    name: 'Users',
-    component: () => import('../views/pages/Users.vue'),
-    meta: {
-      requiresAuth: true,
+      guest: true,
     },
   },
   {
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/pages/Profile'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/collection',
+    name: 'Collection',
+    component: () => import('../views/pages/Collection'),
     meta: {
       requiresAuth: true,
     },
@@ -78,7 +78,7 @@ router.beforeEach((to, _from, next) => {
     if (!auth.isLoggedIn) {
       next()
     } else {
-      next('/users')
+      next('/collection')
     }
   } else {
     next()

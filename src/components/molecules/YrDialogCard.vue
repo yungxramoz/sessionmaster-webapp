@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="headline grey lighten-2">
+    <v-card-title v-if="hasTitleSlot" :class="headlineClass">
       <slot name="title"></slot>
     </v-card-title>
 
@@ -8,17 +8,31 @@
       <slot name="content"></slot>
     </v-card-text>
 
-    <v-divider></v-divider>
+    <template v-if="hasActionsSlot">
+      <v-divider />
 
-    <v-card-actions>
-      <slot name="actions"></slot>
-    </v-card-actions>
+      <v-card-actions> <slot name="actions"></slot> </v-card-actions
+    ></template>
   </v-card>
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 
 @Component
-export default class YrDialogCard extends Vue {}
+export default class YrDialogCard extends Vue {
+  @Prop({ default: 'grey' }) headerColor!: string
+
+  get headlineClass() {
+    return `headline ${this.headerColor} lighten-2`
+  }
+
+  get hasActionsSlot() {
+    return !!this.$slots.actions
+  }
+
+  get hasTitleSlot() {
+    return !!this.$slots.title
+  }
+}
 </script>

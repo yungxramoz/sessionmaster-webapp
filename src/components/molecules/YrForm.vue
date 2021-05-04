@@ -14,12 +14,6 @@
         <slot name="footer"></slot>
       </v-row>
     </div>
-
-    <v-bottom-sheet :value="hasMessage" hide-overlay>
-      <v-alert class="ma-0 pa-6" border="top" :type="messageType" prominent data-cy="message-alert">
-        {{ message }}
-      </v-alert>
-    </v-bottom-sheet>
   </v-container>
 </template>
 <script lang="ts">
@@ -29,8 +23,6 @@ import { Component, Prop } from 'vue-property-decorator'
 @Component
 export default class YrForm extends Vue {
   @Prop() title?: string
-  @Prop({ default: '' }) message!: string
-  @Prop({ default: 'info' }) messageType!: string
 
   get hasTitle() {
     return typeof this.title != 'undefined' && this.title
@@ -38,10 +30,6 @@ export default class YrForm extends Vue {
 
   get hasFooterSlot() {
     return !!this.$slots.footer
-  }
-
-  get hasMessage() {
-    return this.message ? true : false
   }
 }
 </script>

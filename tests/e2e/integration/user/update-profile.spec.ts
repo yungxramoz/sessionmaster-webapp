@@ -1,11 +1,11 @@
-describe('Update profile', () => {
+describe('Update user profile', () => {
   beforeEach(() => {
     //login before each test
     cy.visit('/login')
     cy.get('[data-cy="username-input"]').type(Cypress.env('username'))
     cy.get('[data-cy="password-input"]').type(Cypress.env('password'))
     cy.get('[data-cy="login-btn"]').click()
-    cy.location('pathname', { timeout: 6000 }).should('eq', '/users')
+    cy.location('pathname', { timeout: 6000 }).should('eq', '/collection')
 
     cy.get('[data-cy="to-profile-btn"]').click()
     cy.location('pathname', { timeout: 2000 }).should('eq', '/profile')
