@@ -2,16 +2,21 @@
   "pluginsFile": "tests/e2e/plugins/index.js",
   "testFiles": [
     "user/signup.spec.ts",
-    "user/logout.spec.ts",
     "user/authenticate.spec.ts",
+    "user/logout.spec.ts",
     "user/update-profile.spec.ts",
     "user/update-password.spec.ts",
+
+    "collection/add.spec.ts",
+    "collection/remove.spec.ts",
+
     "user/delete.spec.ts"
   ],
   "env": {
     "firstname": "Cypress",
     "lastname": "Tester",
     "username": "cytester",
-    "password": "CyTester12345"
+    "password": "CyTester12345",
+    "boardGameName": "Rising Sun"
   }
 }

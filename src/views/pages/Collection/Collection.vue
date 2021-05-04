@@ -11,7 +11,7 @@
 
         <v-col
           cols="4"
-          class="d-flex child-flex"
+          class="d-flex child-flex boardgame"
           v-for="boardgame in collection"
           :key="boardgame.id"
         >
@@ -34,7 +34,7 @@
     </template>
     <template v-if="details != null">
       <v-dialog v-model="detailsDialog" max-width="600" :persistent="loadingRemove" scrollable>
-        <yr-dialog-card>
+        <yr-dialog-card data-cy="remove-details-content">
           <template #content>
             <v-img contain :aspect-ratio="1" :src="details.imageUrl" :lazy-src="details.thumbUrl">
               <template v-slot:placeholder>
@@ -94,7 +94,12 @@
 
           <template #actions>
             <v-spacer></v-spacer>
-            <yr-btn text @click="detailsDialog = false" data-cy="close-remove-btn">
+            <yr-btn
+              text
+              @click="detailsDialog = false"
+              :disabled="loadingRemove"
+              data-cy="close-remove-btn"
+            >
               Close
             </yr-btn>
             <yr-btn
@@ -143,12 +148,13 @@ export default class Collection extends Vue {
 
   created() {
     this.loadingCollection = true
+    this.alert.resetAlert()
     this.boardGame
       .fetchCollection(this.auth.userId)
       .then(
         (response: BoardGameModel[]) => {
           if (response.length === 0) {
-            this.alert.setMessage('Start collect your board games!')
+            this.alert.setMessage('Start collecting your board games!')
             this.alert.setType('info')
           }
         },

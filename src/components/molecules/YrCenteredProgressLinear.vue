@@ -6,7 +6,7 @@
       </template>
     </v-col>
     <v-col cols="10">
-      <yr-progress-linear></yr-progress-linear>
+      <yr-progress-linear data-cy="progress-loading"></yr-progress-linear>
     </v-col>
   </v-row>
 </template>

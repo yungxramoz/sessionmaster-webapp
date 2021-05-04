@@ -6,6 +6,7 @@
       fullscreen
       hide-overlay
       transition="slide-x-reverse-transition"
+      data-cy="add-boardgame-dialog"
     >
       <template v-slot:activator="{ on, attrs }">
         <yr-icon-btn
@@ -20,9 +21,13 @@
           mdi-plus
         </yr-icon-btn>
       </template>
-      <yr-dialog-card header-color="primary">
+      <yr-dialog-card header-color="primary" data-cy="add-content">
         <template #title>
-          <yr-icon-btn color="white" @click="addBoardGameDialog = false">
+          <yr-icon-btn
+            color="white"
+            @click="addBoardGameDialog = false"
+            data-cy="back-to-collection-btn"
+          >
             mdi-chevron-left
           </yr-icon-btn>
           <span class="white--text ml-4"></span>
@@ -38,6 +43,7 @@
                 :disabled="loadingBoardGames"
                 :loading="loadingBoardGames"
                 @keyup.enter="filterBoardGames"
+                data-cy="search-boardgame-input"
               ></yr-text-field>
               <yr-icon-btn
                 class="ml-1"
@@ -45,10 +51,11 @@
                 :disabled="loadingBoardGames"
                 :loading="loadingBoardGames"
                 @click="filterBoardGames"
+                data-cy="search-boardgame-btn"
                 >mdi-magnify</yr-icon-btn
               >
             </v-row>
-            <v-list class="pt-7">
+            <v-list class="pt-7" data-cy="boardgame-list">
               <v-list-item
                 v-for="boardgame in searchedBoardGames"
                 :key="'searched-' + boardgame.id"
@@ -84,7 +91,7 @@
     </v-dialog>
     <template v-if="details != null">
       <v-dialog v-model="detailsDialog" max-width="600" scrollable>
-        <yr-dialog-card>
+        <yr-dialog-card data-cy="add-details-content">
           <template #content>
             <v-img contain :aspect-ratio="1" :src="details.imageUrl" :lazy-src="details.thumbUrl">
               <template v-slot:placeholder>
@@ -144,8 +151,13 @@
 
           <template #actions>
             <v-spacer></v-spacer>
-            <yr-btn text @click="detailsDialog = false" data-cy="cancel-add-btn">
-              Cancel
+            <yr-btn
+              text
+              @click="detailsDialog = false"
+              :disabled="loadingAdd"
+              data-cy="close-add-btn"
+            >
+              Close
             </yr-btn>
             <yr-btn
               color="success"
