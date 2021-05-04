@@ -1,4 +1,4 @@
-describe('Update profile', () => {
+describe('Update user profile', () => {
   beforeEach(() => {
     //login before each test
     cy.visit('/login')

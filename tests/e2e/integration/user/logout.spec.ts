@@ -1,4 +1,4 @@
-describe('Logout', () => {
+describe('Logout user', () => {
   beforeEach(() => {
     //login before each test
     cy.visit('/login')

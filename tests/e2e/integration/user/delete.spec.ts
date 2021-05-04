@@ -1,4 +1,4 @@
-describe('Delete', () => {
+describe('Delete user', () => {
   beforeEach(() => {
     //login before tests
     cy.visit('/login')
@@ -15,7 +15,7 @@ describe('Delete', () => {
     cy.location('pathname').should('eq', '/profile')
   })
 
-  it('successfully deletes own user', () => {
+  it('successfully deletes test user', () => {
     cy.get('[data-cy="delete-btn"]').click()
 
     cy.get('[data-cy="confirm-delete-btn"]')

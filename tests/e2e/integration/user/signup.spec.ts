@@ -1,4 +1,4 @@
-describe('Sign Up', () => {
+describe('Sign up user', () => {
   it('successfully register test user', () => {
     cy.visit('/')
     cy.get('[data-cy="to-login-btn"]').click()

@@ -1,4 +1,4 @@
-describe('Authentication', () => {
+describe('Authenticate user', () => {
   it('successfully logs in and logs out', () => {
     cy.visit('/login')
 
