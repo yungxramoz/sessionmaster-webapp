@@ -73,10 +73,57 @@ serve dist
 
 ### Frontend
 
+Die Entwicklung der Brettspiel Sammlung im Frontend verlief fast reibungslos. Meistens musste ich noch kleinigkeiten im Backend anpassen.
+
+- POST braucht als Body ein Objekt und kann nicht nur als `string` besetehen (.NET Core)
+- DELETE der Parameter `boardGameId` musste direkt in die Route mitgegeben werden (einheitliche API Schnittstelle)
+
+Die Funktionalität konnte ich am **04.05.2021** fertiggstellen. Zusätzlich wurden Cypress E2E Tests geschrieben, welche die Korrektheit des Features überprüfen. Follgende Tests wurden beschrieben und erfolgreich durchgeführt:
+
+- Add board game to collection
+  - shows initialy a message to add board games
+  - adds board game
+  - does not display already added board games in search
+  - displays information that no board game was found
+- Remove board game from collection
+  - removes board game
+
+Der Projektaufbau basiert auf einer n-Layer Architektur. Diese Funktionalität wurde in die bestehende Architektur implementiert ohne weitere Anpassungen vorzunehmen.
+
+1. View Models der Collection Domain übernehmen
+2. Collection API Service entwickeln
+3. Collection Module dem Vuex Store hinzufügen
+4. Collection Page erstellen
+5. Vue Router Konfiguration anpassen
+
+Damit Fehler global angezeigt werden können, baute ich zusätlich ein Store-Modul für Alerts (`alert-module`)
+
 #### Projekt Architektur
+
+![Architektur](/assets/wj_architektur.png)
 
 #### Atomic Design Concept
 
+Die Components werden nach dem Atomic Design System strukturiert. Die kleinste Ein-heit wird «Atoms» genannt (z.B. Textfelder, Labels, Buttons, etc.). Mehrere «Atoms» zu-sammen formen ein «Molecule» (z.B. SearchField, PasswordField). Mehrere «Molecules» zusammen bilden wiederum ein «Organism» (z.B. Toolbar). Diese Components werden dann in ein Template gepackt und schliesslich zusammengefasst zu einer Page.
+
+![Atimic Design](/assets/wj_atomic.png)
+
 #### Extend Vuetify
+
+Die eingesetzte Library Vuetify bietet keine Möglichkeit, global default Properties einzusetzten. Deshalb werden die Komponenten durch vererbung abstrahiert, mit einem Prefix (Yr) versehen und dann Projektweit eingesetzt. Dies bietet die Möglichkeit durch eine Zeile den Style z.B. eines Textfields applikationsweit zu ändern. Diese Komponenten entsprechen im Atomic-Design einem Atom.
+
+```ts
+<script lang="ts">
+import { VTextField } from 'vuetify/lib'
+
+import { Component, Prop } from 'vue-property-decorator'
+
+@Component
+export default class YrTextField extends VTextField {
+  @Prop({ default: true }) public filled!: boolean | string
+  @Prop({ default: 'secondary darken-1' }) public color!: string
+}
+</script>
+```
 
 ## Fazit
