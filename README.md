@@ -9,10 +9,13 @@
   - [Arbeitsjournal](#arbeitsjournal)
     - [Backend](#backend)
     - [Frontend](#frontend)
+      - [Abweichung vom Mockup](#abweichung-vom-mockup)
       - [Projekt Architektur](#projekt-architektur)
       - [Atomic Design Concept](#atomic-design-concept)
       - [Extend Vuetify](#extend-vuetify)
   - [Fazit](#fazit)
+    - [Was lief gut?](#was-lief-gut)
+    - [Wo gibt es Verbesserungspotential?](#wo-gibt-es-verbesserungspotential)
 
 ## Planung
 
@@ -98,7 +101,21 @@ Der Projektaufbau basiert auf einer n-Layer Architektur. Diese Funktionalität w
 
 Damit Fehler global angezeigt werden können, baute ich zusätlich ein Store-Modul für Alerts (`alert-module`)
 
+#### Abweichung vom Mockup
+
+In der Umsetzung bemerkte ich, dass einige Brettspiele kein Bild haben. Dies ist beim hinzufügen von Spielen der Collection nicht wirklich geeignet, da die aussagekräftige Information fehlt. Deshalb erstetze ich das Grid durch eine Liste bestehend aus dem Bild und dem Namen des Brettspiels. Das ganze muss ja "Mobile-First" entworfen werden. Zusätzlich habe ich ein Dialog entwickelt, der die Details der Brettspiele anzeigt.
+
+Geplant:
+
+![Geplantes UI](/assets/wj_planned.png)
+
+Anpassung bei der Realisierung:
+
+![Umgesetztes UI](/assets/wj_implementation.png)
+
 #### Projekt Architektur
+
+Da Vuex die Daten nicht persistent abspeichert, muss neben dem Store ein `localStorage` eingesetzt werden. Da werden Daten abgelegt die auch nach einem Reload bestehen müssen, wie das JWT Access Token für die Authentifizierung.
 
 ![Architektur](/assets/wj_architektur.png)
 
@@ -127,3 +144,15 @@ export default class YrTextField extends VTextField {
 ```
 
 ## Fazit
+
+### Was lief gut?
+
+Die Arbeit konnte in der geplanten Zeit entwickelt werden. Das UI sieht sehr sauber aus und das State Management wurde schön gelöst. Durch Promises von der Komponente zum Store und dann bis zum Service, kann der State der Daten (Store) und des UIs (Komponente) sehr zuverlässig und sauber gelöst werden.
+
+Die klare Definition der Software Architektur hat sehr gut unterstützt. Durch das Single Responsibility Prinzip, wusste ich immer in welchem File ich beim debuggen suchen und in welchen Files ich Anpassungen machen musste.
+
+Die Abstrahierung der Vuetify Komponenten ist wohl die beste Idee des Projekts. So kann ich die ganzen Komponenten wie normale Vuetify Komponenten (so auch ihre Dokumentation nutzen) nutzen aber habe trotzdem die Möglichkeit sie global zu steuern.
+
+### Wo gibt es Verbesserungspotential?
+
+Die Page wurde zwar in Komponenten unterteilt, könnte aber noch weiter aufgesplittet. Das `template` der `Collection.vue` Komponente ist alleine schon 120 Zeilen lang. Eine Verbesserung wäre, die ganzen genutzten Dialoge in eigene Komponenten auszulagern. Das Details Dialog beim "Add" ist eigneltich das gleiche wie beim Remove.
