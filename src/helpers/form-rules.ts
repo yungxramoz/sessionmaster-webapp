@@ -11,14 +11,14 @@ export function minCharRule(
   minCount: number,
   message = `Enter at least ${minCount} characters`
 ): (value: any) => boolean | string {
-  return value => value.length > minCount || message
+  return value => value.length >= minCount || message
 }
 
 export function maxCharRule(
   maxCount: number,
   message = `Only ${maxCount} characters allowed`
 ): (value: any) => boolean | string {
-  return value => value.length < maxCount || message
+  return value => value.length <= maxCount || message
 }
 
 export function regexRule(
