@@ -35,7 +35,7 @@ class SessionplanModule extends VuexModule {
   }
 
   @Action({ rawError: true })
-  public fetchOwnedSessionplans(): Promise<any> {
+  public fetchOwned(): Promise<any> {
     return SessionplanService.getOwnedSessionplans().then(
       (sessionplans: SessionplanOverviewModel[]) => {
         this.fetchSessionplansSuccess(sessionplans)
