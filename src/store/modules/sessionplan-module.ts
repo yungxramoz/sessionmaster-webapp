@@ -34,6 +34,19 @@ class SessionplanModule extends VuexModule {
     this.sessionplanState.openSessionplan = null
   }
 
+  @Mutation
+  public deleteSuccess(sessionplanId: string): void {
+    const deleteIndex = this.sessionplanState.sessionplans?.findIndex(
+      plan => plan.id == sessionplanId
+    )
+    if (deleteIndex) {
+      this.sessionplanState.sessionplans?.splice(deleteIndex, 1)
+    }
+  }
+
+  @Mutation
+  public deleteFailure(): void {}
+
   @Action({ rawError: true })
   public fetchOwned(): Promise<any> {
     return SessionplanService.getOwnedSessionplans().then(
@@ -56,6 +69,19 @@ class SessionplanModule extends VuexModule {
       },
       error => {
         return promiseErrorHandler(error, this.openDetailsFailure)
+      }
+    )
+  }
+
+  @Action({ rawError: true })
+  public delete(sessionplanId: string): Promise<any> {
+    return SessionplanService.deleteSessionplan(sessionplanId).then(
+      response => {
+        this.deleteSuccess(sessionplanId)
+        return Promise.resolve(response.data)
+      },
+      error => {
+        return promiseErrorHandler(error, this.deleteFailure)
       }
     )
   }

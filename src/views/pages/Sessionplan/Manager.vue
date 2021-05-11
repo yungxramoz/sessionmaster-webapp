@@ -14,7 +14,7 @@
 
           <v-card-actions>
             <v-spacer />
-            <yr-btn text color="error">
+            <yr-btn text color="error" @click="openDeleteDialog(plan)">
               <v-icon class="mr-1">
                 mdi-delete
               </v-icon>
@@ -35,6 +35,40 @@
         </yr-icon-btn>
       </v-row>
     </v-col>
+
+    <v-dialog v-model="deleteDialog" max-width="500px" :persistent="deleteLoading" retain-focus>
+      <yr-dialog-card>
+        <template #title>
+          Delete Sessionplan
+        </template>
+
+        <template #content>
+          Are you sure you want to delete the Sessionplan "{{ deleteSessionplan.name }}"?
+        </template>
+
+        <template #actions>
+          <v-spacer></v-spacer>
+          <yr-btn
+            text
+            :disabled="deleteLoading"
+            @click="deleteDialog = false"
+            data-cy="cancel-delete-btn"
+          >
+            Cancel
+          </yr-btn>
+          <yr-btn
+            color="error"
+            :disabled="deleteLoading"
+            :loading="deleteLoading"
+            text
+            @click="deleteAct"
+            data-cy="confirm-delete-btn"
+          >
+            Delete
+          </yr-btn>
+        </template>
+      </yr-dialog-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -51,6 +85,13 @@ import { SessionplanOverviewModel } from '@/models/data/sessionplan'
 export default class Manager extends Vue {
   private loading: boolean = false
 
+  private deleteLoading: boolean = false
+  private deleteDialog: boolean = false
+  private deleteSessionplan: SessionplanOverviewModel = {
+    id: '',
+    name: '',
+  }
+
   private alert: AlertModule = getModule(AlertModule, this.$store)
   private sessionplan: SessionplanModule = getModule(SessionplanModule, this.$store)
 
@@ -61,7 +102,12 @@ export default class Manager extends Vue {
     this.sessionplan
       .fetchOwned()
       .then(
-        (_response: SessionplanOverviewModel[]) => {},
+        (response: SessionplanOverviewModel[]) => {
+          if (response.length == 0) {
+            this.alert.setMessage('Plan your next game session!')
+            this.alert.setType('info')
+          }
+        },
         error => {
           this.alert.setMessage(error)
           this.alert.setType('error')
@@ -74,6 +120,33 @@ export default class Manager extends Vue {
 
   get ownedSessionplans(): SessionplanOverviewModel[] {
     return this.sessionplan.owned
+  }
+
+  openDeleteDialog(sessionplan: SessionplanOverviewModel) {
+    this.deleteSessionplan = sessionplan
+    this.deleteDialog = true
+  }
+
+  deleteAct() {
+    this.deleteLoading = true
+    this.alert.reset()
+
+    this.sessionplan
+      .delete(this.deleteSessionplan.id)
+      .then(
+        () => {
+          this.deleteDialog = false
+          this.alert.setMessage('Deleted Sessionplan "' + this.deleteSessionplan.name + '"!')
+          this.alert.setType('success')
+        },
+        error => {
+          this.alert.setMessage(error)
+          this.alert.setType('error')
+        }
+      )
+      .finally(() => {
+        this.deleteLoading = false
+      })
   }
 }
 </script>
