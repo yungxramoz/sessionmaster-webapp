@@ -20,7 +20,7 @@
               </v-icon>
               Delete
             </yr-btn>
-            <yr-btn text :to="'/sessionplan/details/' + plan.id">
+            <yr-btn text :to="'details/' + plan.id">
               <v-icon class="mr-1">
                 mdi-open-in-new
               </v-icon>
@@ -30,7 +30,15 @@
         </v-card>
       </v-row>
       <v-row>
-        <yr-icon-btn height="130px" fab tile block :large-icon="true" data-cy="add-sessionplan-btn">
+        <yr-icon-btn
+          fab
+          tile
+          block
+          height="130px"
+          :large-icon="true"
+          to="wizard"
+          data-cy="add-sessionplan-btn"
+        >
           mdi-plus
         </yr-icon-btn>
       </v-row>
