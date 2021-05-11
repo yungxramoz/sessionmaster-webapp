@@ -5,17 +5,13 @@ import { AuthenticationModel, RegistrationModel, UserModel } from '@/models/data
 const API_URL = process.env.VUE_APP_BASE_API_URL + 'users/'
 
 class AuthService {
-  login(authData: AuthenticationModel): Promise<UserModel> {
-    return axios
-      .post(API_URL + 'authenticate', authData)
-      .then((response: AxiosResponse<UserModel>) => {
-        if (response.data.token) {
-          localStorage.setItem('id', JSON.stringify(response.data.id))
-          localStorage.setItem('accessToken', JSON.stringify(response.data.token))
-        }
-
-        return response.data
-      })
+  async login(authData: AuthenticationModel): Promise<UserModel> {
+    const response = await axios.post(API_URL + 'authenticate', authData)
+    if (response.data.token) {
+      localStorage.setItem('id', JSON.stringify(response.data.id))
+      localStorage.setItem('accessToken', JSON.stringify(response.data.token))
+    }
+    return response.data
   }
 
   logout(): void {
