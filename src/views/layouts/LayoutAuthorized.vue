@@ -75,11 +75,15 @@
 
     <v-footer app class="pa-0">
       <v-bottom-navigation shift color="secondary darken-1">
-        <v-btn to="collection" data-cy="to-collection-btn">
+        <v-btn to="/sessionplan/manager" data-cy="to-sessionplan-btn">
+          <span>Sessionplan</span>
+          <v-icon>mdi-wizard-hat</v-icon>
+        </v-btn>
+        <v-btn to="/collection" data-cy="to-collection-btn">
           <span>Collection</span>
           <v-icon>mdi-treasure-chest</v-icon>
         </v-btn>
-        <v-btn to="profile" data-cy="to-profile-btn">
+        <v-btn to="/profile" data-cy="to-profile-btn">
           <span>Profile</span>
           <v-icon>mdi-account</v-icon>
         </v-btn>
