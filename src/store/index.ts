@@ -6,6 +6,7 @@ import UserModule from './modules/user-module'
 import AccountModule from './modules/account-module'
 import BoardGameModule from './modules/boardgame-module'
 import AlertModule from './modules/alert-module'
+import SessionplanModule from './modules/sessionplan-module'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ const store = new Vuex.Store({
     user: UserModule,
     account: AccountModule,
     boardgame: BoardGameModule,
+    sessionplan: SessionplanModule,
 
     alert: AlertModule,
   },
