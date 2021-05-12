@@ -148,7 +148,7 @@ export default class Wizard extends Vue {
     this.addSessionplan.sessions = []
     for (const dateString of this.dates) {
       const session = {
-        date: new Date(dateString),
+        date: new Date(dateString).toISOString(),
       } as SessionModel
 
       this.addSessionplan.sessions.push(session)

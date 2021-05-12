@@ -1,6 +1,6 @@
 export default interface SessionModel {
   id: string
-  date: Date
+  date: string
   startTime?: Date
   endTime?: Date
 }

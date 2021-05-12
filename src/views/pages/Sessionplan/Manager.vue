@@ -10,7 +10,8 @@
             {{ plan.name }}
           </v-card-title>
 
-          <v-card-subtitle>Next Session: </v-card-subtitle>
+          <!-- TODO add some sessionplan information -->
+          <v-card-subtitle>Additional information coming soon...</v-card-subtitle>
 
           <v-card-actions>
             <v-spacer />
