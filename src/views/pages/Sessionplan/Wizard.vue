@@ -18,7 +18,7 @@
               ></yr-text-field>
             </v-form>
           </v-row>
-          <v-row>
+          <v-row class="pt-2">
             <v-spacer />
             <yr-btn text @click="currentStep = 2" :disabled="!valid">
               Next
@@ -44,12 +44,12 @@
               ></v-date-picker>
             </v-card>
           </v-row>
-          <v-row>
+          <v-row class="pt-2">
             <v-spacer />
             <yr-btn text @click="currentStep = 1">
               Back
             </yr-btn>
-            <yr-btn text @click="currentStep = 3">
+            <yr-btn text @click="prepareSessions()">
               Next
             </yr-btn>
           </v-row>
@@ -57,18 +57,29 @@
       </v-stepper-content>
 
       <v-stepper-step step="3" :complete="currentStep > 3" color="accent">
-        Adjust the play time
+        Overview
       </v-stepper-step>
       <v-stepper-content step="3">
         <v-col>
           <v-row>
-            <ul>
-              <li v-for="date in dates" :key="date">
-                {{ date }}
-              </li>
-            </ul>
+            <v-list :key="sessionKey" width="100%">
+              <v-subheader>Sessions:</v-subheader>
+              <v-list-item
+                v-for="session in addSessionplan.sessions"
+                :key="session.date.toDateString()"
+              >
+                <v-list-item-content>
+                  <v-list-item-subtitle v-text="session.date.toDateString()"></v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <yr-icon-btn color="error" @click="remove(session)">
+                    mdi-close
+                  </yr-icon-btn>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
           </v-row>
-          <v-row>
+          <v-row class="pt-2">
             <v-spacer />
             <yr-btn text @click="currentStep = 2" :disabled="loading">
               Back
@@ -93,11 +104,12 @@ import SessionplanModule from '@/store/modules/sessionplan-module'
 
 import { AddSessionplanModel, SessionplanDetailModel } from '@/models/data/sessionplan'
 import { maxCharRule, requiredRule } from '@/helpers/form-rules'
+import { SessionModel } from '@/models/data/session'
 
 @Component
 export default class Wizard extends Vue {
   private loading: boolean = false
-
+  private sessionKey = 0
   private currentStep = 1
   private steps = 3
 
@@ -130,6 +142,34 @@ export default class Wizard extends Vue {
       .finally(() => {
         this.loading = false
       })
+  }
+
+  prepareSessions() {
+    this.addSessionplan.sessions = []
+    for (const dateString of this.dates) {
+      const session = {
+        date: new Date(dateString),
+      } as SessionModel
+
+      this.addSessionplan.sessions.push(session)
+    }
+
+    //order by date prop
+    this.addSessionplan.sessions.sort((a, b) => (a.date > b.date ? 1 : b.date > a.date ? -1 : 0))
+
+    this.currentStep = 3
+  }
+
+  remove(session: SessionModel) {
+    this.$nextTick(() => {
+      setTimeout(() => {
+        const sessionIndex = this.addSessionplan.sessions?.indexOf(session)
+        if (sessionIndex != undefined && sessionIndex > -1) {
+          this.addSessionplan.sessions?.splice(sessionIndex, 1)
+          this.sessionKey++
+        }
+      }, 200)
+    })
   }
 }
 </script>
