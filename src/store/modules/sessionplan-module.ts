@@ -3,7 +3,11 @@ import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators'
 import SessionplanService from '@/services/sessionplan-service'
 
 import SessionplanState from '@/models/state/sessionplan-state'
-import { SessionplanOverviewModel, SessionplanDetailModel } from '@/models/data/sessionplan'
+import {
+  SessionplanOverviewModel,
+  SessionplanDetailModel,
+  AddSessionplanModel,
+} from '@/models/data/sessionplan'
 
 import { promiseErrorHandler } from '@/helpers/promise-error-handler'
 
@@ -47,6 +51,14 @@ class SessionplanModule extends VuexModule {
   @Mutation
   public deleteFailure(): void {}
 
+  @Mutation
+  public createSuccess(sessionplan: SessionplanDetailModel): void {
+    this.sessionplanState.openSessionplan = sessionplan
+  }
+
+  @Mutation
+  public createFailure(): void {}
+
   @Action({ rawError: true })
   public fetchOwned(): Promise<any> {
     return SessionplanService.getOwnedSessionplans().then(
@@ -69,6 +81,19 @@ class SessionplanModule extends VuexModule {
       },
       error => {
         return promiseErrorHandler(error, this.openDetailsFailure)
+      }
+    )
+  }
+
+  @Action({ rawError: true })
+  public create(sessioplan: AddSessionplanModel): Promise<any> {
+    return SessionplanService.addSessionplan(sessioplan).then(
+      (response: SessionplanDetailModel) => {
+        this.createSuccess(response)
+        return Promise.resolve(response)
+      },
+      error => {
+        return promiseErrorHandler(error, this.createFailure)
       }
     )
   }
