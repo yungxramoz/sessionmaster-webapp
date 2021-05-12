@@ -43,7 +43,7 @@ class SessionplanModule extends VuexModule {
     const deleteIndex = this.sessionplanState.sessionplans?.findIndex(
       plan => plan.id == sessionplanId
     )
-    if (deleteIndex) {
+    if (deleteIndex != undefined && deleteIndex > -1) {
       this.sessionplanState.sessionplans?.splice(deleteIndex, 1)
     }
   }
