@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-stepper vertical v-model="currentStep" class="elevation-0">
-      <v-stepper-step step="1" :complete="currentStep > 1" color="accent darken-1">
+      <v-stepper-step step="1" :complete="currentStep > 1" color="accent">
         Choose a name
       </v-stepper-step>
       <v-stepper-content step="1">
@@ -27,13 +27,22 @@
         </v-col>
       </v-stepper-content>
 
-      <v-stepper-step step="2" :complete="currentStep > 2" color="accent darken-1">
+      <v-stepper-step step="2" :complete="currentStep > 2" color="accent">
         Select the game dates
       </v-stepper-step>
       <v-stepper-content step="2">
         <v-col>
           <v-row>
-            <span>Soon...</span>
+            <v-card outlined elevation="2">
+              <v-date-picker
+                v-model="dates"
+                color="secondary darken-1"
+                header-color="primary"
+                flat
+                full-width
+                multiple
+              ></v-date-picker>
+            </v-card>
           </v-row>
           <v-row>
             <v-spacer />
@@ -47,13 +56,17 @@
         </v-col>
       </v-stepper-content>
 
-      <v-stepper-step step="3" :complete="currentStep > 3" color="accent darken-1">
+      <v-stepper-step step="3" :complete="currentStep > 3" color="accent">
         Adjust the play time
       </v-stepper-step>
       <v-stepper-content step="3">
         <v-col>
           <v-row>
-            <span>Soon...</span>
+            <ul>
+              <li v-for="date in dates" :key="date">
+                {{ date }}
+              </li>
+            </ul>
           </v-row>
           <v-row>
             <v-spacer />
@@ -88,11 +101,13 @@ export default class Wizard extends Vue {
   private currentStep = 1
   private steps = 3
 
-  private valid = false
-  private nameRules: InputValidationRule[] = [requiredRule(), maxCharRule(20)]
   private addSessionplan: AddSessionplanModel = {
     name: '',
   }
+
+  private valid = false
+  private nameRules: InputValidationRule[] = [requiredRule(), maxCharRule(20)]
+  private dates: string[] = []
 
   private alert: AlertModule = getModule(AlertModule, this.$store)
   private sessionplan: SessionplanModule = getModule(SessionplanModule, this.$store)
