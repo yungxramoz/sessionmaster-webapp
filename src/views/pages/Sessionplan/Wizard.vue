@@ -64,12 +64,11 @@
           <v-row>
             <v-list :key="sessionKey" width="100%">
               <v-subheader>Sessions:</v-subheader>
-              <v-list-item
-                v-for="session in addSessionplan.sessions"
-                :key="session.date.toDateString()"
-              >
+              <v-list-item v-for="session in addSessionplan.sessions" :key="session.date">
                 <v-list-item-content>
-                  <v-list-item-subtitle v-text="session.date.toDateString()"></v-list-item-subtitle>
+                  <v-list-item-subtitle>
+                    {{ sessionDisplayDate(session.date) }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <yr-icon-btn color="error" @click="remove(session)">
@@ -105,6 +104,8 @@ import SessionplanModule from '@/store/modules/sessionplan-module'
 import { AddSessionplanModel, SessionplanDetailModel } from '@/models/data/sessionplan'
 import { maxCharRule, requiredRule } from '@/helpers/form-rules'
 import { SessionModel } from '@/models/data/session'
+
+import { vuetifyDate, displayDate } from '@/helpers/date-format-helper'
 
 @Component
 export default class Wizard extends Vue {
@@ -170,6 +171,10 @@ export default class Wizard extends Vue {
         }
       }, 200)
     })
+  }
+
+  sessionDisplayDate(date: string): string {
+    return displayDate(date)
   }
 }
 </script>
