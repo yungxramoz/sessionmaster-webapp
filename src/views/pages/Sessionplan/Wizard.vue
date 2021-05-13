@@ -21,26 +21,24 @@
       <v-stepper-items>
         <v-stepper-content step="1" class="pt-1">
           <v-col>
-            <v-col class="stepper-content-height">
-              <v-row>
-                <v-alert dense text type="info" width="100%">
-                  Provide a sessionplan name
-                </v-alert>
-              </v-row>
-              <v-row>
-                <v-form v-model="valid" style="width: 100%;" @submit.stop.prevent="nextStep">
-                  <yr-text-field
-                    v-model="addSessionplan.name"
-                    label="Sessionplan Name"
-                    counter="20"
-                    required
-                    :rules="nameRules"
-                    data-cy="username-input"
-                  ></yr-text-field>
-                </v-form>
-              </v-row>
-            </v-col>
-            <v-row class="pt-2">
+            <v-row>
+              <v-alert dense text type="info" width="100%">
+                Provide a sessionplan name
+              </v-alert>
+            </v-row>
+            <v-row>
+              <v-form v-model="valid" style="width: 100%;" @submit.stop.prevent="nextStep">
+                <yr-text-field
+                  v-model="addSessionplan.name"
+                  label="Sessionplan Name"
+                  counter="20"
+                  required
+                  :rules="nameRules"
+                  data-cy="username-input"
+                ></yr-text-field>
+              </v-form>
+            </v-row>
+            <v-row class="pt-4">
               <v-spacer />
               <yr-btn text @click="nextStep" :disabled="!valid">
                 Next
@@ -51,26 +49,24 @@
 
         <v-stepper-content step="2" class="pt-1">
           <v-col>
-            <v-col class="stepper-content-height">
-              <v-row>
-                <v-alert dense text type="info" width="100%">
-                  Select the dates for your planed game sessions
-                </v-alert>
-              </v-row>
-              <v-row>
-                <v-card outlined elevation="2">
-                  <v-date-picker
-                    v-model="dates"
-                    color="secondary darken-1"
-                    header-color="primary"
-                    flat
-                    full-width
-                    multiple
-                  ></v-date-picker>
-                </v-card>
-              </v-row>
-            </v-col>
-            <v-row class="pt-2">
+            <v-row>
+              <v-alert dense text type="info" width="100%">
+                Select game session dates
+              </v-alert>
+            </v-row>
+            <v-row>
+              <v-card outlined elevation="2">
+                <v-date-picker
+                  v-model="dates"
+                  color="secondary darken-1"
+                  header-color="primary"
+                  flat
+                  full-width
+                  multiple
+                ></v-date-picker>
+              </v-card>
+            </v-row>
+            <v-row class="pt-4">
               <v-spacer />
               <yr-btn text @click="backStep">
                 Back
@@ -84,33 +80,31 @@
 
         <v-stepper-content step="3" class="pt-1">
           <v-col>
-            <v-col class="stepper-content-height">
-              <v-row>
-                <v-alert dense text type="info" width="100%">
-                  Check if the session dates are correctly set
-                </v-alert>
-              </v-row>
+            <v-row>
+              <v-alert dense text type="info" width="100%">
+                Check the sessionplan details
+              </v-alert>
+            </v-row>
 
-              <v-row>
-                <v-subheader class="font-weight-bold text-subtitle-1">
-                  Name: {{ addSessionplan.name }}
-                </v-subheader>
-                <v-list :key="sessionKey" width="100%" class="overflow-y-auto list-height">
-                  <v-list-item v-for="session in addSessionplan.sessions" :key="session.date">
-                    <v-list-item-content>
-                      <v-list-item-subtitle>
-                        {{ sessionDisplayDate(session.date) }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      <yr-icon-btn color="error" @click="remove(session)">
-                        mdi-close
-                      </yr-icon-btn>
-                    </v-list-item-action>
-                  </v-list-item>
-                </v-list>
-              </v-row>
-            </v-col>
+            <v-row>
+              <v-subheader class="font-weight-bold text-subtitle-1">
+                Name: {{ addSessionplan.name }}
+              </v-subheader>
+              <v-list :key="sessionKey" width="100%" class="overflow-y-auto list-height">
+                <v-list-item v-for="session in addSessionplan.sessions" :key="session.date">
+                  <v-list-item-content>
+                    <v-list-item-subtitle>
+                      {{ sessionDisplayDate(session.date) }}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <yr-icon-btn color="error" @click="remove(session)">
+                      mdi-close
+                    </yr-icon-btn>
+                  </v-list-item-action>
+                </v-list-item>
+              </v-list>
+            </v-row>
             <v-row class="pt-4">
               <v-spacer />
               <yr-btn text @click="backStep" :disabled="loading">
@@ -234,10 +228,7 @@ export default class Wizard extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.stepper-content-height {
-  height: calc(100vh - 300px);
-}
 .list-height {
-  max-height: calc(100vh - 450px);
+  max-height: calc(100vh - 410px);
 }
 </style>
