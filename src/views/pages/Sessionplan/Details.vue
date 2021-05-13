@@ -4,9 +4,25 @@
       <yr-centered-progress-linear text="Getting your spellbook ready..." />
     </template>
     <v-col v-else cols="12">
-      <div class="text-center">
-        <h1 class="mb-5">{{ details.name }}</h1>
-      </div>
+      <v-row>
+        <v-col v-if="isAuthenticated" cols="auto">
+          <yr-icon-btn to="/sessionplan/manager">
+            mdi-chevron-left
+          </yr-icon-btn></v-col
+        >
+        <v-col class="text-center">
+          <h1 class="mb-5 text-h6">{{ details.name }}</h1>
+        </v-col>
+        <v-col cols="auto">
+          <yr-icon-btn>
+            mdi-share
+          </yr-icon-btn>
+        </v-col>
+      </v-row>
+
+      <v-row v-if="!isAuthenticated">
+        <yr-text-field label="Your Name"></yr-text-field>
+      </v-row>
 
       <v-card outlined elevation="2">
         <v-date-picker
@@ -39,6 +55,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { getModule } from 'vuex-module-decorators'
 
 import AlertModule from '@/store/modules/alert-module'
+import AuthModule from '@/store/modules/auth-module'
 import SessionplanModule from '@/store/modules/sessionplan-module'
 
 import { SessionplanDetailModel } from '@/models/data/sessionplan'
@@ -52,6 +69,7 @@ export default class Details extends Vue {
   private selectedDate: string = vuetifyDate(new Date().toISOString())
 
   private alert: AlertModule = getModule(AlertModule, this.$store)
+  private auth: AuthModule = getModule(AuthModule, this.$store)
   private sessionplan: SessionplanModule = getModule(SessionplanModule, this.$store)
 
   created() {
@@ -81,6 +99,10 @@ export default class Details extends Vue {
 
   get sessionDates(): string[] {
     return this.details.sessions.map(s => vuetifyDate(s.date))
+  }
+
+  get isAuthenticated(): boolean {
+    return this.auth.authState.loggedIn
   }
 
   sessionDetailTitle(date: string): string {
