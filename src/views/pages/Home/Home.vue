@@ -23,6 +23,14 @@
             Collect - Plan - Organize - Play
           </p>
         </v-col>
+        <v-col cols="12" class="text-center">
+          <yr-btn rounded outlined to="sessionplan/wizard">
+            Plan your game sessions
+            <v-icon class="ml-2">
+              mdi-arrow-right
+            </v-icon>
+          </yr-btn>
+        </v-col>
       </v-row>
     </v-row>
   </v-container>
