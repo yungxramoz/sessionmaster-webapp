@@ -1,94 +1,128 @@
 <template>
   <v-container>
-    <v-stepper vertical v-model="currentStep" class="elevation-0">
-      <v-stepper-step step="1" :complete="currentStep > 1" color="accent">
-        Choose a name
-      </v-stepper-step>
-      <v-stepper-content step="1">
-        <v-col>
-          <v-row>
-            <v-form v-model="valid" style="width: 100%;">
-              <yr-text-field
-                v-model="addSessionplan.name"
-                label="Sessionplan Name"
-                counter="20"
-                required
-                :rules="nameRules"
-                data-cy="username-input"
-              ></yr-text-field>
-            </v-form>
-          </v-row>
-          <v-row class="pt-2">
-            <v-spacer />
-            <yr-btn text @click="currentStep = 2" :disabled="!valid">
-              Next
-            </yr-btn>
-          </v-row>
-        </v-col>
-      </v-stepper-content>
+    <v-stepper v-model="currentStep" class="elevation-0">
+      <v-stepper-header class="elevation-0">
+        <v-stepper-step step="1" :complete="stepComplete(1)" color="accent">
+          Choose a name
+        </v-stepper-step>
 
-      <v-stepper-step step="2" :complete="currentStep > 2" color="accent">
-        Select the game dates
-      </v-stepper-step>
-      <v-stepper-content step="2">
-        <v-col>
-          <v-row>
-            <v-card outlined elevation="2">
-              <v-date-picker
-                v-model="dates"
-                color="secondary darken-1"
-                header-color="primary"
-                flat
-                full-width
-                multiple
-              ></v-date-picker>
-            </v-card>
-          </v-row>
-          <v-row class="pt-2">
-            <v-spacer />
-            <yr-btn text @click="currentStep = 1">
-              Back
-            </yr-btn>
-            <yr-btn text @click="prepareSessions()">
-              Next
-            </yr-btn>
-          </v-row>
-        </v-col>
-      </v-stepper-content>
+        <v-divider />
 
-      <v-stepper-step step="3" :complete="currentStep > 3" color="accent">
-        Overview
-      </v-stepper-step>
-      <v-stepper-content step="3">
-        <v-col>
-          <v-row>
-            <v-list :key="sessionKey" width="100%">
-              <v-subheader>Sessions:</v-subheader>
-              <v-list-item v-for="session in addSessionplan.sessions" :key="session.date">
-                <v-list-item-content>
-                  <v-list-item-subtitle>
-                    {{ sessionDisplayDate(session.date) }}
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <yr-icon-btn color="error" @click="remove(session)">
-                    mdi-close
-                  </yr-icon-btn>
-                </v-list-item-action>
-              </v-list-item>
-            </v-list>
-          </v-row>
-          <v-row class="pt-2">
-            <v-spacer />
-            <yr-btn text @click="currentStep = 2" :disabled="loading">
-              Back
-            </yr-btn>
-            <yr-btn @click="createAct" :disabled="loading" :loading="loading">
-              Create
-            </yr-btn>
-          </v-row>
-        </v-col>
-      </v-stepper-content>
+        <v-stepper-step step="2" :complete="stepComplete(2)" color="accent">
+          Select the game dates
+        </v-stepper-step>
+
+        <v-divider />
+
+        <v-stepper-step step="3" :complete="stepComplete(3)" color="accent">
+          Overview
+        </v-stepper-step>
+      </v-stepper-header>
+      <v-stepper-items>
+        <v-stepper-content step="1" class="pt-1">
+          <v-col>
+            <v-col class="stepper-content-height">
+              <v-row>
+                <v-alert dense text type="info" width="100%">
+                  Provide a sessionplan name
+                </v-alert>
+              </v-row>
+              <v-row>
+                <v-form v-model="valid" style="width: 100%;" @submit.stop.prevent="nextStep">
+                  <yr-text-field
+                    v-model="addSessionplan.name"
+                    label="Sessionplan Name"
+                    counter="20"
+                    required
+                    :rules="nameRules"
+                    data-cy="username-input"
+                  ></yr-text-field>
+                </v-form>
+              </v-row>
+            </v-col>
+            <v-row class="pt-2">
+              <v-spacer />
+              <yr-btn text @click="nextStep" :disabled="!valid">
+                Next
+              </yr-btn>
+            </v-row>
+          </v-col>
+        </v-stepper-content>
+
+        <v-stepper-content step="2" class="pt-1">
+          <v-col>
+            <v-col class="stepper-content-height">
+              <v-row>
+                <v-alert dense text type="info" width="100%">
+                  Select the dates for your planed game sessions
+                </v-alert>
+              </v-row>
+              <v-row>
+                <v-card outlined elevation="2">
+                  <v-date-picker
+                    v-model="dates"
+                    color="secondary darken-1"
+                    header-color="primary"
+                    flat
+                    full-width
+                    multiple
+                  ></v-date-picker>
+                </v-card>
+              </v-row>
+            </v-col>
+            <v-row class="pt-2">
+              <v-spacer />
+              <yr-btn text @click="backStep">
+                Back
+              </yr-btn>
+              <yr-btn text @click="prepareSessions">
+                Next
+              </yr-btn>
+            </v-row>
+          </v-col>
+        </v-stepper-content>
+
+        <v-stepper-content step="3" class="pt-1">
+          <v-col>
+            <v-col class="stepper-content-height">
+              <v-row>
+                <v-alert dense text type="info" width="100%">
+                  Check if the session dates are correctly set
+                </v-alert>
+              </v-row>
+
+              <v-row>
+                <v-subheader class="font-weight-bold text-subtitle-1">
+                  Name: {{ addSessionplan.name }}
+                </v-subheader>
+                <v-list :key="sessionKey" width="100%" class="overflow-y-auto list-height">
+                  <v-list-item v-for="session in addSessionplan.sessions" :key="session.date">
+                    <v-list-item-content>
+                      <v-list-item-subtitle>
+                        {{ sessionDisplayDate(session.date) }}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                      <yr-icon-btn color="error" @click="remove(session)">
+                        mdi-close
+                      </yr-icon-btn>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-list>
+              </v-row>
+            </v-col>
+            <v-row class="pt-4">
+              <v-spacer />
+              <yr-btn text @click="backStep" :disabled="loading">
+                Back
+              </yr-btn>
+              <yr-btn @click="createAct" :disabled="loading" :loading="loading">
+                Create
+              </yr-btn>
+            </v-row>
+          </v-col>
+        </v-stepper-content>
+      </v-stepper-items>
     </v-stepper>
   </v-container>
 </template>
@@ -112,7 +146,6 @@ export default class Wizard extends Vue {
   private loading: boolean = false
   private sessionKey = 0
   private currentStep = 1
-  private steps = 3
 
   private addSessionplan: AddSessionplanModel = {
     name: '',
@@ -124,6 +157,13 @@ export default class Wizard extends Vue {
 
   private alert: AlertModule = getModule(AlertModule, this.$store)
   private sessionplan: SessionplanModule = getModule(SessionplanModule, this.$store)
+
+  get stepperContentHeight() {
+    return { height: 'calc(100vh - 300px' }
+  }
+  get listHeight() {
+    return { 'max-height': 'calc(100vh - 450px' }
+  }
 
   createAct() {
     this.loading = true
@@ -162,19 +202,42 @@ export default class Wizard extends Vue {
   }
 
   remove(session: SessionModel) {
-    this.$nextTick(() => {
-      setTimeout(() => {
-        const sessionIndex = this.addSessionplan.sessions?.indexOf(session)
-        if (sessionIndex != undefined && sessionIndex > -1) {
-          this.addSessionplan.sessions?.splice(sessionIndex, 1)
-          this.sessionKey++
-        }
-      }, 200)
-    })
+    const sessionIndex = this.addSessionplan.sessions?.indexOf(session)
+    if (sessionIndex != undefined && sessionIndex > -1) {
+      this.addSessionplan.sessions?.splice(sessionIndex, 1)
+    }
+
+    const dateIndex = this.dates.indexOf(vuetifyDate(session.date))
+    if (dateIndex != undefined && dateIndex > -1) {
+      this.dates.splice(dateIndex, 1)
+    }
+
+    this.sessionKey++
   }
 
   sessionDisplayDate(date: string): string {
     return displayDate(date)
   }
+
+  nextStep() {
+    this.currentStep++
+  }
+
+  backStep() {
+    this.currentStep--
+  }
+
+  stepComplete(step: number): boolean {
+    return this.currentStep > step
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+.stepper-content-height {
+  height: calc(100vh - 300px);
+}
+.list-height {
+  max-height: calc(100vh - 450px);
+}
+</style>
