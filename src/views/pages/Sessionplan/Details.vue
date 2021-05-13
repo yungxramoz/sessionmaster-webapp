@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <template v-if="loading">
-      <yr-centered-progress-linear text="Getting your spellbook ready..." />
+      <yr-centered-progress-linear text="Opening a sessionplan..." />
     </template>
     <v-col v-else cols="12">
       <v-row>
