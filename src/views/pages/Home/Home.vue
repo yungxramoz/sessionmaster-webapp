@@ -24,7 +24,7 @@
           </p>
         </v-col>
         <v-col cols="12" class="text-center">
-          <yr-btn rounded outlined to="sessionplan/wizard">
+          <yr-btn rounded outlined to="sessionplan/wizard" data-cy="add-sessionplan-btn">
             Plan your game sessions
             <v-icon class="ml-2">
               mdi-arrow-right
