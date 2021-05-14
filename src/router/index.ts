@@ -53,6 +53,30 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/sessionplan',
+    component: () => import('../views/pages/Sessionplan'),
+    children: [
+      {
+        path: 'wizard',
+        name: 'SessionplaWizard',
+        component: () => import('../views/pages/Sessionplan/Wizard.vue'),
+      },
+      {
+        path: 'manager',
+        name: 'SessionplaManager',
+        component: () => import('../views/pages/Sessionplan/Manager.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'details/:id',
+        name: 'SessionplaDetails',
+        component: () => import('../views/pages/Sessionplan/Details.vue'),
+      },
+    ],
+  },
+  {
     path: '*',
     name: 'NotFound',
     component: NotFound,

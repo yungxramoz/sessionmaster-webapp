@@ -35,34 +35,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref, Vue } from 'vue-property-decorator'
-import { getModule } from 'vuex-module-decorators'
-import { InputValidationRule } from 'vuetify'
-
-import AuthModule from '@/store/modules/auth-module'
-import AlertModule from '@/store/modules/alert-module'
-import AccountModule from '@/store/modules/account-module'
-
-import { maxCharRule, minCharRule, passwordRule, requiredRule } from '@/helpers/form-rules'
-import { cloneSource } from '@/helpers/clone'
-
-import { VForm } from '@/models/types'
-import { UpdateUserModel, UserModel } from '@/models/data/user'
-import FormDefinition from '@/models/form-definition'
+import { Component, Vue } from 'vue-property-decorator'
 
 import EditProfileForm from './EditProfileForm.vue'
 import EditPasswordForm from './EditPasswordForm.vue'
-
-interface Form extends FormDefinition {
-  valid: false
-  fields: UpdateUserModel
-  rules?: {
-    firstname: InputValidationRule[]
-    lastname: InputValidationRule[]
-    username: InputValidationRule[]
-    password: InputValidationRule[]
-  }
-}
 
 @Component({
   components: {
@@ -70,108 +46,5 @@ interface Form extends FormDefinition {
     EditPasswordForm,
   },
 })
-export default class Profile extends Vue {
-  @Ref() readonly profileForm!: VForm
-
-  private form: Form = {
-    valid: false,
-    fields: {
-      firstname: '',
-      lastname: '',
-      username: '',
-      password: '',
-    },
-  }
-  private updateLoading: boolean = false
-  private deleteLoading: boolean = false
-  private deleteDialog: boolean = false
-
-  private auth: AuthModule = getModule(AuthModule, this.$store)
-  private alert: AlertModule = getModule(AlertModule, this.$store)
-  private account: AccountModule = getModule(AccountModule, this.$store)
-
-  created() {
-    this.form.rules = {
-      firstname: [requiredRule(), maxCharRule(50)],
-      lastname: [requiredRule(), maxCharRule(50)],
-      username: [requiredRule(), maxCharRule(20)],
-      password: [requiredRule(), minCharRule(8), passwordRule()],
-    }
-
-    this.updateLoading = true
-
-    this.account
-      .fetch(this.auth.userId)
-      .then(
-        (response: UserModel) => {
-          this.form.fields = cloneSource(response)
-        },
-        error => {
-          this.alert.setMessage(error)
-          this.alert.setType('error')
-        }
-      )
-      .finally(() => {
-        this.updateLoading = false
-      })
-  }
-
-  get updateEnabled(): boolean {
-    return (
-      (this.form.fields.username != this.account.currentUser.username ||
-        this.form.fields.firstname != this.account.currentUser.firstname ||
-        this.form.fields.lastname != this.account.currentUser.lastname) &&
-      this.form.valid &&
-      !this.updateLoading
-    )
-  }
-
-  async update() {
-    if (this.profileForm.validate()) {
-      this.updateLoading = true
-      this.alert.reset()
-
-      const updateData = {
-        id: this.auth.userId,
-        data: this.form.fields,
-      }
-
-      this.account
-        .update(updateData)
-        .then(
-          (response: UpdateUserModel) => {
-            this.form.fields = cloneSource(response)
-          },
-          (error: string) => {
-            this.alert.setMessage(error)
-            this.alert.setType('error')
-          }
-        )
-        .finally(() => {
-          this.updateLoading = false
-        })
-    }
-  }
-
-  async deleteAct() {
-    this.deleteLoading = true
-    this.alert.reset()
-
-    this.account
-      .delete(this.auth.userId)
-      .then(
-        () => {
-          this.auth.logout()
-          this.$router.push('/')
-        },
-        error => {
-          this.alert.setMessage(error)
-          this.alert.setType('error')
-        }
-      )
-      .finally(() => {
-        this.deleteLoading = false
-      })
-  }
-}
+export default class Profile extends Vue {}
 </script>

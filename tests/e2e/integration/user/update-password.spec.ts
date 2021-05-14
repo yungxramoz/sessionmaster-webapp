@@ -1,14 +1,21 @@
 describe('Update user password', () => {
   beforeEach(() => {
     //login before each test
+    cy.server()
+    cy.route('POST', '**/api/users/authenticate').as('auth')
+    cy.route('**/api/users/*').as('getProfile')
+
     cy.visit('/login')
+
     cy.get('[data-cy="username-input"]').type(Cypress.env('username'))
     cy.get('[data-cy="password-input"]').type(Cypress.env('password'))
     cy.get('[data-cy="login-btn"]').click()
-    cy.location('pathname', { timeout: 6000 }).should('eq', '/collection')
 
-    cy.get('[data-cy="to-profile-btn"]').click()
-    cy.location('pathname', { timeout: 2000 }).should('eq', '/profile')
+    cy.wait('@auth')
+
+    cy.visit('/profile')
+
+    cy.wait('@getProfile')
 
     cy.get('[data-cy="edit-profile-tab"]').should('have.class', 'v-tab--active')
   })

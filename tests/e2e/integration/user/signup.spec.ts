@@ -1,5 +1,8 @@
 describe('Sign up user', () => {
   it('successfully register test user', () => {
+    cy.server()
+    cy.route('POST', '**/api/users/register').as('signedUp')
+
     cy.visit('/')
     cy.get('[data-cy="to-login-btn"]').click()
     cy.location('pathname').should('eq', '/login')
@@ -32,6 +35,8 @@ describe('Sign up user', () => {
       .click()
       .should('be.disabled')
 
-    cy.location('pathname', { timeout: 60000 }).should('eq', '/collection')
+    cy.wait('@signedUp')
+
+    cy.location('pathname').should('eq', '/collection')
   })
 })

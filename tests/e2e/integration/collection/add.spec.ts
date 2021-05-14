@@ -1,13 +1,22 @@
 describe('Add board game to collection', () => {
   beforeEach(() => {
     //login before each test
+    cy.server()
+    cy.route('POST', '**/api/users/authenticate').as('auth')
+    cy.route('**/api/users/*/boardgames').as('getCollection')
+
     cy.visit('/login')
+
     cy.get('[data-cy="username-input"]').type(Cypress.env('username'))
     cy.get('[data-cy="password-input"]').type(Cypress.env('password'))
     cy.get('[data-cy="login-btn"]').click()
-    cy.location('pathname', { timeout: 6000 }).should('eq', '/collection')
 
-    cy.get('[data-cy="progress-loading"]', { timeout: 10000 }).should('not.exist')
+    cy.wait('@auth')
+    cy.wait('@getCollection')
+
+    cy.location('pathname').should('eq', '/collection')
+
+    cy.get('[data-cy="progress-loading"]').should('not.exist')
   })
 
   it('shows initialy a message to add board games', () => {
