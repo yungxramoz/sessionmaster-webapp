@@ -10,6 +10,8 @@
     "collection/add.spec.ts",
     "collection/remove.spec.ts",
 
+    "sessionplan/create.spec.ts",
+
     "user/delete.spec.ts"
   ],
   "env": {
@@ -17,6 +19,7 @@
     "lastname": "Tester",
     "username": "cytester",
     "password": "CyTester12345",
-    "boardGameName": "Rising Sun"
+    "boardGameName": "Rising Sun",
+    "sessionplanName": "Cypress Test Plan"
   }
 }
