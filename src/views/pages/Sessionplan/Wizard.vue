@@ -64,7 +64,7 @@
                   v-model="dates"
                   color="secondary darken-1"
                   header-color="primary"
-                  data-cy="session-datepicker"
+                  data-cy="wizard-datepicker"
                 ></v-date-picker>
               </v-card>
             </v-row>

@@ -6,33 +6,34 @@
     <v-col v-else cols="12">
       <v-row>
         <v-col v-if="isAuthenticated" cols="auto">
-          <yr-icon-btn to="/sessionplan/manager">
+          <yr-icon-btn to="/sessionplan/manager" data-cy="to-manager-btn">
             mdi-chevron-left
           </yr-icon-btn></v-col
         >
         <v-col class="text-center">
-          <h1 class="mb-5 text-h6">{{ details.name }}</h1>
+          <h1 class="mb-5 text-h6" data-cy="details-title">{{ details.name }}</h1>
         </v-col>
         <v-col cols="auto">
-          <yr-icon-btn>
+          <yr-icon-btn data-cy="share-btn">
             mdi-share
           </yr-icon-btn>
         </v-col>
       </v-row>
 
       <v-row v-if="!isAuthenticated">
-        <yr-text-field label="Your Name"></yr-text-field>
+        <yr-text-field label="Your Name" data-cy="name-input"></yr-text-field>
       </v-row>
 
       <v-card outlined elevation="2">
         <v-date-picker
+          flat
+          full-width
+          :events="sessionDates"
           v-model="selectedDate"
           color="secondary darken-1"
           header-color="primary"
           event-color="accent"
-          :events="sessionDates"
-          flat
-          full-width
+          data-cy="details-datepicker"
         ></v-date-picker>
       </v-card>
 
