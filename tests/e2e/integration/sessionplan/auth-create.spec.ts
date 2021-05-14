@@ -3,7 +3,6 @@ describe('Create sessionplans as authenticated user', () => {
     //login before each test
     cy.server()
     cy.route('POST', '**/api/users/authenticate').as('auth')
-    cy.route('**/api/users/*/boardgames').as('getCollection')
 
     cy.visit('/login')
 
@@ -111,6 +110,8 @@ describe('Create sessionplans as authenticated user', () => {
     cy.get('[data-cy="details-datepicker"]')
       .find('.v-date-picker-table__events')
       .should('have.length', 1)
+
+    cy.get('[data-cy="details-title"]').contains(Cypress.env('sessionplanName'))
 
     //check that auth specific controls are available
     cy.get('[data-cy=to-manager-btn]').should('exist')

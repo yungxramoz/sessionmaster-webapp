@@ -10,7 +10,9 @@
     "collection/add.spec.ts",
     "collection/remove.spec.ts",
 
-    "sessionplan/create.spec.ts",
+    "sessionplan/auth-create.spec.ts",
+    "sessionplan/auth-open.spec.ts",
+    "sessionplan/auth-delete.spec.ts",
 
     "user/delete.spec.ts"
   ],
