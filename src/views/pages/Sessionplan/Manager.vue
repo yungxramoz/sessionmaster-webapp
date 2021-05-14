@@ -15,13 +15,18 @@
 
           <v-card-actions>
             <v-spacer />
-            <yr-btn text color="error" @click="openDeleteDialog(plan)">
+            <yr-btn
+              text
+              color="error"
+              @click="openDeleteDialog(plan)"
+              :data-cy="'delete-' + plan.name + '-btn'"
+            >
               <v-icon class="mr-1">
                 mdi-delete
               </v-icon>
               Delete
             </yr-btn>
-            <yr-btn text :to="'details/' + plan.id">
+            <yr-btn text :to="'details/' + plan.id" :data-cy="'open-' + plan.name + '-btn'">
               <v-icon class="mr-1">
                 mdi-open-in-new
               </v-icon>
