@@ -28,7 +28,7 @@
             @click="addBoardGameDialog = false"
             data-cy="back-to-collection-btn"
           >
-            mdi-chevron-left
+            mdi-arrow-left
           </yr-icon-btn>
           <span class="white--text ml-4"></span>
         </template>
