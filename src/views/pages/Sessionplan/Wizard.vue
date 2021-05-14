@@ -55,18 +55,12 @@
               </v-alert>
             </v-row>
             <v-row>
-              <v-card outlined elevation="2">
-                <v-date-picker
-                  flat
-                  full-width
-                  multiple
-                  :min="currentDate"
-                  v-model="dates"
-                  color="secondary darken-1"
-                  header-color="primary"
-                  data-cy="wizard-datepicker"
-                ></v-date-picker>
-              </v-card>
+              <yr-date-picker
+                multiple
+                :min="currentDate"
+                v-model="dates"
+                data-cy="wizard-datepicker"
+              ></yr-date-picker>
             </v-row>
             <v-row class="pt-4">
               <v-spacer />

@@ -24,18 +24,11 @@
         <yr-text-field label="Your Name" data-cy="name-input"></yr-text-field>
       </v-row>
 
-      <v-card outlined elevation="2">
-        <v-date-picker
-          flat
-          full-width
-          :events="sessionDates"
-          v-model="selectedDate"
-          color="secondary darken-1"
-          header-color="primary"
-          event-color="accent"
-          data-cy="details-datepicker"
-        ></v-date-picker>
-      </v-card>
+      <yr-date-picker
+        :events="sessionDates"
+        v-model="selectedDate"
+        data-cy="details-datepicker"
+      ></yr-date-picker>
 
       <v-divider class="my-3" />
 
