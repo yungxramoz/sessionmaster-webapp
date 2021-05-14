@@ -34,13 +34,13 @@
                   counter="20"
                   required
                   :rules="nameRules"
-                  data-cy="username-input"
+                  data-cy="name-input"
                 ></yr-text-field>
               </v-form>
             </v-row>
             <v-row class="pt-4">
               <v-spacer />
-              <yr-btn text @click="nextStep" :disabled="!valid">
+              <yr-btn text @click="nextStep" :disabled="!valid" data-cy="next-to-2-btn">
                 Next
               </yr-btn>
             </v-row>
@@ -57,21 +57,28 @@
             <v-row>
               <v-card outlined elevation="2">
                 <v-date-picker
-                  v-model="dates"
-                  color="secondary darken-1"
-                  header-color="primary"
                   flat
                   full-width
                   multiple
+                  :min="currentDate"
+                  v-model="dates"
+                  color="secondary darken-1"
+                  header-color="primary"
+                  data-cy="session-datepicker"
                 ></v-date-picker>
               </v-card>
             </v-row>
             <v-row class="pt-4">
               <v-spacer />
-              <yr-btn text @click="backStep">
+              <yr-btn text @click="backStep" data-cy="back-to-1-btn">
                 Back
               </yr-btn>
-              <yr-btn text @click="prepareSessions">
+              <yr-btn
+                text
+                @click="prepareSessions"
+                :disabled="dates.length == 0"
+                data-cy="next-to-3-btn"
+              >
                 Next
               </yr-btn>
             </v-row>
@@ -87,10 +94,15 @@
             </v-row>
 
             <v-row>
-              <v-subheader class="font-weight-bold text-subtitle-1">
+              <v-subheader class="font-weight-bold text-subtitle-1" data-cy="overview-name-text">
                 Name: {{ addSessionplan.name }}
               </v-subheader>
-              <v-list :key="sessionKey" width="100%" class="overflow-y-auto list-height">
+              <v-list
+                :key="sessionKey"
+                width="100%"
+                class="overflow-y-auto list-height"
+                data-cy="date-list"
+              >
                 <v-list-item v-for="session in addSessionplan.sessions" :key="session.date">
                   <v-list-item-content>
                     <v-list-item-subtitle>
@@ -98,7 +110,11 @@
                     </v-list-item-subtitle>
                   </v-list-item-content>
                   <v-list-item-action>
-                    <yr-icon-btn color="error" @click="remove(session)">
+                    <yr-icon-btn
+                      color="error"
+                      @click="remove(session)"
+                      :disabled="dates.length == 1"
+                    >
                       mdi-close
                     </yr-icon-btn>
                   </v-list-item-action>
@@ -107,10 +123,15 @@
             </v-row>
             <v-row class="pt-4">
               <v-spacer />
-              <yr-btn text @click="backStep" :disabled="loading">
+              <yr-btn text @click="backStep" :disabled="loading" data-cy="back-to-2-btn">
                 Back
               </yr-btn>
-              <yr-btn @click="createAct" :disabled="loading" :loading="loading">
+              <yr-btn
+                @click="createAct"
+                :disabled="loading"
+                :loading="loading"
+                data-cy="create-btn"
+              >
                 Create
               </yr-btn>
             </v-row>
@@ -148,16 +169,10 @@ export default class Wizard extends Vue {
   private valid = false
   private nameRules: InputValidationRule[] = [requiredRule(), maxCharRule(20)]
   private dates: string[] = []
+  private currentDate: string = vuetifyDate(new Date().toISOString())
 
   private alert: AlertModule = getModule(AlertModule, this.$store)
   private sessionplan: SessionplanModule = getModule(SessionplanModule, this.$store)
-
-  get stepperContentHeight() {
-    return { height: 'calc(100vh - 300px' }
-  }
-  get listHeight() {
-    return { 'max-height': 'calc(100vh - 450px' }
-  }
 
   createAct() {
     this.loading = true
