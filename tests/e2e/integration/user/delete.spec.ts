@@ -1,11 +1,17 @@
 describe('Delete user', () => {
   beforeEach(() => {
-    //login before tests
+    //login before each test
+    cy.server()
+    cy.route('POST', '**/api/users/authenticate').as('auth')
+
     cy.visit('/login')
+
     cy.get('[data-cy="username-input"]').type(Cypress.env('username'))
     cy.get('[data-cy="password-input"]').type(Cypress.env('password'))
     cy.get('[data-cy="login-btn"]').click()
-    cy.location('pathname', { timeout: 6000 }).should('eq', '/collection')
+
+    cy.wait('@auth')
+
     cy.visit('/profile')
   })
 

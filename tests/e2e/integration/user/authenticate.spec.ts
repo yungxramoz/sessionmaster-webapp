@@ -1,5 +1,10 @@
 describe('Authenticate user', () => {
   it('successfully logs in and logs out', () => {
+    //login before each test
+    cy.server()
+    cy.route('POST', '**/api/users/authenticate').as('auth')
+    cy.route('**/api/users/*').as('getProfile')
+
     cy.visit('/login')
 
     cy.get('[data-cy="username-input"]')
@@ -14,6 +19,8 @@ describe('Authenticate user', () => {
       .click()
       .should('be.disabled')
 
-    cy.location('pathname', { timeout: 60000 }).should('eq', '/collection')
+    cy.wait('@auth')
+
+    cy.location('pathname').should('eq', '/collection')
   })
 })
