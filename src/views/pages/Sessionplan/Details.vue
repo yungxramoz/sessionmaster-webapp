@@ -57,22 +57,17 @@
                 :value="sharedLink"
                 :success-messages="copiedMessage"
                 :success="copied"
+                :hide-details="!copied"
               >
-                <template v-if="copied" #append-outer>
-                  <v-icon color="success">
+                <template #append-outer>
+                  <yr-icon-btn v-if="!copied" color="secondary darken-1" @click="copyLink" small>
+                    mdi-content-copy
+                  </yr-icon-btn>
+                  <v-icon v-else class="ml-1 my-1" color="success">
                     mdi-check-circle
                   </v-icon>
                 </template>
               </yr-text-field>
-
-              <yr-icon-btn
-                v-if="!copied"
-                color="secondary darken-1"
-                class="ml-2 mt-1"
-                @click="copyLink"
-              >
-                mdi-content-copy
-              </yr-icon-btn>
             </v-row>
           </v-col>
         </template>
