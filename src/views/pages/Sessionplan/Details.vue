@@ -58,9 +58,16 @@
                 :success-messages="copiedMessage"
                 :success="copied"
                 :hide-details="!copied"
+                data-cy="shared-link-input"
               >
                 <template #append-outer>
-                  <yr-icon-btn v-if="!copied" color="secondary darken-1" @click="copyLink" small>
+                  <yr-icon-btn
+                    v-if="!copied"
+                    color="secondary darken-1"
+                    @click="copyLink"
+                    small
+                    data-cy="copy-link-btn"
+                  >
                     mdi-content-copy
                   </yr-icon-btn>
                   <v-icon v-else class="ml-1 my-1" color="success">
