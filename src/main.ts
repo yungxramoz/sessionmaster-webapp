@@ -7,6 +7,7 @@ import vuetify from './plugins/vuetify'
 import YrTextField from '@/components/atoms/YrTextField.vue'
 import YrBtn from '@/components/atoms/YrBtn.vue'
 import YrProgressLinear from '@/components/atoms/YrProgressLinear.vue'
+import YrDatePicker from '@/components/atoms/YrDatePicker.vue'
 
 import YrPasswordField from '@/components/molecules/YrPasswordField.vue'
 import YrIconBtn from '@/components/molecules/YrIconBtn.vue'
@@ -22,6 +23,7 @@ Vue.config.productionTip = false
 Vue.component('yr-text-field', YrTextField)
 Vue.component('yr-btn', YrBtn)
 Vue.component('yr-progress-linear', YrProgressLinear)
+Vue.component('yr-date-picker', YrDatePicker)
 
 Vue.component('yr-password-field', YrPasswordField)
 Vue.component('yr-icon-btn', YrIconBtn)
