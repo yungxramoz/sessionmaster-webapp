@@ -67,7 +67,7 @@
       </v-dialog>
 
       <v-row v-if="!isAuthenticated">
-        <yr-text-field label="Your Name" data-cy="name-input"></yr-text-field>
+        <yr-text-field v-model="guestName" label="Your Name" data-cy="name-input"></yr-text-field>
       </v-row>
 
       <yr-date-picker
@@ -117,7 +117,9 @@
           </v-chip>
         </template>
         <template v-else>
-          <h4>No session planned on this date</h4>
+          <v-alert dense text type="info" width="100%">
+            Select a session
+          </v-alert>
         </template>
       </template>
     </v-col>
@@ -202,6 +204,14 @@ export default class Details extends Vue {
     return this.session.currentOpen
   }
 
+  get guestName(): string {
+    return this.session.sessionState.guestName ?? ''
+  }
+
+  set guestName(name: string) {
+    this.session.updateGuestName(name)
+  }
+
   openSessionDetails(): void {
     if (this.selectedSessionDate) {
       this.loadingSession = true
@@ -241,7 +251,7 @@ export default class Details extends Vue {
       .then(
         (_response: SessionModel) => {
           const date = displayDate(this.session.currentOpen.date)
-          this.alert.setMessage('You will participate the game on ' + date)
+          this.alert.setMessage('Participate the game on ' + date)
           this.alert.setType('success')
         },
         error => {
@@ -264,7 +274,7 @@ export default class Details extends Vue {
       .then(
         (_response: SessionModel) => {
           const date = displayDate(this.session.currentOpen.date)
-          this.alert.setMessage('You left the game on ' + date)
+          this.alert.setMessage('Left the game for ' + date)
           this.alert.setType('success')
         },
         error => {
