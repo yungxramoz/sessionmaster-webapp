@@ -1,3 +1,5 @@
 import SessionModel from './SessionModel'
+import SessionUserModel from './SessionUserModel'
+import UserResponseSessionModel from './UserResponseSessionModel'
 
-export { SessionModel }
+export { SessionModel, SessionUserModel, UserResponseSessionModel }
