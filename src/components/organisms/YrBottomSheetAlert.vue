@@ -1,6 +1,6 @@
 <template>
   <v-bottom-sheet :value="hasMessage" hide-overlay>
-    <v-alert class="ma-0 pa-6" border="top" :type="type" prominent data-cy="message-alert">
+    <v-alert class="ma-0 px-6" border="top" :type="type" data-cy="message-alert">
       {{ message }}
     </v-alert>
   </v-bottom-sheet>
