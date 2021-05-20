@@ -15,7 +15,9 @@ class SessionService {
     id: string,
     userResponse: UserResponseSessionModel
   ): Promise<SessionModel> {
-    const response = await axios.post(`${API_URL}${id}`, userResponse, { headers: authHeader() })
+    const response = await axios.post(`${API_URL}${id}/register`, userResponse, {
+      headers: authHeader(),
+    })
     return response.data
   }
 
@@ -23,7 +25,9 @@ class SessionService {
     id: string,
     userResponse: UserResponseSessionModel
   ): Promise<SessionModel> {
-    const response = await axios.post(`${API_URL}${id}`, userResponse, { headers: authHeader() })
+    const response = await axios.post(`${API_URL}${id}/cancel`, userResponse, {
+      headers: authHeader(),
+    })
     return response.data
   }
 }
