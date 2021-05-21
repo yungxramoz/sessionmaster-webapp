@@ -1,5 +1,7 @@
 module.exports = {
-  transpileDependencies: [
-    'vuetify'
-  ]
+  pwa: {
+    name: 'Sessionmaster',
+    themeColor: '#3d9797',
+  },
+  transpileDependencies: ['vuetify'],
 }

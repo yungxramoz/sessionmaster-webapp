@@ -17,6 +17,7 @@ import YrForm from '@/components/molecules/YrForm.vue'
 import YrCenteredProgressLinear from '@/components/molecules/YrCenteredProgressLinear.vue'
 
 import YrTabs from '@/components/atoms/YrTabs.vue'
+import './registerServiceWorker'
 
 Vue.config.productionTip = false
 
