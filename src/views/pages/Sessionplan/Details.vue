@@ -91,30 +91,38 @@
               <v-spacer />
               <v-checkbox
                 hide-details
-                :input-value="participateCurrent"
                 label="Participate"
                 class="mt-0 pt-0"
-                :disabled="loadingParticipate"
+                :input-value="participateCurrent"
+                :disabled="participateCheckboxDisabled"
+                :key="participateKey"
                 @change="toggleParticipationState"
               >
               </v-checkbox>
             </v-row>
+            <v-row v-show="sessionDetails.users.length > 0">
+              <v-subheader> {{ sessionDetails.users.length }} Participants: </v-subheader>
+            </v-row>
+            <v-row v-show="sessionDetails.users.length == 0">
+              <v-alert dense text type="info" width="100%" class="mt-3">
+                No participants on this session
+              </v-alert>
+            </v-row>
+            <v-row>
+              <v-chip
+                v-for="user in sessionDetails.users"
+                :key="user.name"
+                color="success darken-1"
+                class="ml-2 mb-2"
+                :outlined="!isCurrentUser(user)"
+              >
+                <v-icon left>
+                  mdi-account
+                </v-icon>
+                {{ user.name }}
+              </v-chip>
+            </v-row>
           </v-col>
-          <v-subheader v-show="sessionDetails.users.length > 0">
-            {{ sessionDetails.users.length }} Participants:
-          </v-subheader>
-          <v-chip
-            v-for="user in sessionDetails.users"
-            :key="user.name"
-            color="success darken-1"
-            class="ml-2"
-            :outlined="user.id != authUserId"
-          >
-            <v-icon left>
-              mdi-account
-            </v-icon>
-            {{ user.name }}
-          </v-chip>
         </template>
         <template v-else>
           <v-alert dense text type="info" width="100%">
@@ -136,7 +144,7 @@ import SessionplanModule from '@/store/modules/sessionplan-module'
 import SessionModule from '@/store/modules/session-module'
 
 import { SessionplanDetailModel } from '@/models/data/sessionplan'
-import { SessionModel } from '@/models/data/session'
+import { SessionModel, SessionUserModel } from '@/models/data/session'
 
 import { vuetifyDate, displayDate } from '@/helpers/date-format-helper'
 
@@ -152,7 +160,8 @@ export default class Details extends Vue {
 
   private selectedDate: string = ''
 
-  private participateCurrent: boolean = false
+  // private participateCurrent: boolean = false
+  private participateKey: number = 0
 
   private alert: AlertModule = getModule(AlertModule, this.$store)
   private auth: AuthModule = getModule(AuthModule, this.$store)
@@ -212,6 +221,24 @@ export default class Details extends Vue {
     this.session.updateGuestName(name)
   }
 
+  get participateCheckboxDisabled() {
+    return this.loadingParticipate || (!this.isAuthenticated && this.guestName == '')
+  }
+
+  get participateCurrent() {
+    if (this.isAuthenticated) {
+      return this.session.currentOpen.users.some(u => u.id == this.authUserId)
+    }
+    return this.session.currentOpen.users.some(u => u.name == this.guestName)
+  }
+
+  isCurrentUser(user: SessionUserModel): boolean {
+    if (user.id) {
+      return user.id == this.authUserId
+    }
+    return user.name == this.guestName
+  }
+
   openSessionDetails(): void {
     if (this.selectedSessionDate) {
       this.loadingSession = true
@@ -220,9 +247,7 @@ export default class Details extends Vue {
       this.session
         .fetch(this.selectedSessionDate.id)
         .then(
-          (response: SessionModel) => {
-            this.participateCurrent = response.users.some(u => u.id == this.authUserId)
-          },
+          (response: SessionModel) => {},
           error => {
             this.alert.setMessage(error)
             this.alert.setType('error')
@@ -257,7 +282,7 @@ export default class Details extends Vue {
         error => {
           this.alert.setMessage(error)
           this.alert.setType('error')
-          this.participateCurrent = !this.participateCurrent
+          this.participateKey++
         }
       )
       .finally(() => {
@@ -280,7 +305,7 @@ export default class Details extends Vue {
         error => {
           this.alert.setMessage(error)
           this.alert.setType('error')
-          this.participateCurrent = !this.participateCurrent
+          this.participateKey++
         }
       )
       .finally(() => {
