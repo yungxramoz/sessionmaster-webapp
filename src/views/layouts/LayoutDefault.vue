@@ -19,9 +19,10 @@
       <v-spacer></v-spacer>
       <v-tooltip left>
         <template v-slot:activator="{ on, attrs }">
-          <yr-icon-btn v-bind="attrs" v-on="on" to="/login" data-cy="to-login-btn">
-            mdi-login
-          </yr-icon-btn>
+          <yr-btn v-bind="attrs" v-on="on" to="/login" data-cy="to-login-btn" text>
+            Login
+            <v-icon class="ml-2" dense>mdi-login</v-icon>
+          </yr-btn>
         </template>
         <span>Login</span>
       </v-tooltip>

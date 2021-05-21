@@ -22,13 +22,15 @@
         <template v-slot:activator="{ on: dialogOn, attrs: dialogAttrs }">
           <v-tooltip left>
             <template v-slot:activator="{ on: tooltipOn, attrs: tooltipAttrs }">
-              <yr-icon-btn
+              <yr-btn
                 v-bind="{ ...dialogAttrs, ...tooltipAttrs }"
                 v-on="{ ...dialogOn, ...tooltipOn }"
                 data-cy="logout-btn"
+                text
               >
-                mdi-logout
-              </yr-icon-btn>
+                Logout
+                <v-icon class="ml-2" dense>mdi-logout</v-icon>
+              </yr-btn>
             </template>
             <span>Logout</span>
           </v-tooltip>
