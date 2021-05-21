@@ -72,64 +72,11 @@
 
       <yr-date-picker
         :events="sessionDates"
-        :disabled="loadingSession || loadingParticipate"
         v-model="selectedDate"
-        @click:date="openSessionDetails"
         data-cy="details-datepicker"
       ></yr-date-picker>
 
-      <v-divider v-if="!loadingSession && !loadingParticipate" class="my-4" />
-      <yr-progress-linear v-else class="mt-4 my-3" />
-
-      <template v-if="!loadingSession">
-        <template v-if="selectedSessionDate">
-          <v-col>
-            <v-row>
-              <h4>
-                {{ sessionDetailTitle(sessionDetails.date) }}
-              </h4>
-              <v-spacer />
-              <v-checkbox
-                hide-details
-                label="Participate"
-                class="mt-0 pt-0"
-                :input-value="participateCurrent"
-                :disabled="participateCheckboxDisabled"
-                :key="participateKey"
-                @change="toggleParticipationState"
-              >
-              </v-checkbox>
-            </v-row>
-            <v-row v-show="sessionDetails.users.length > 0">
-              <v-subheader> {{ sessionDetails.users.length }} Participants: </v-subheader>
-            </v-row>
-            <v-row v-show="sessionDetails.users.length == 0">
-              <v-alert dense text type="info" width="100%" class="mt-3">
-                No participants on this session
-              </v-alert>
-            </v-row>
-            <v-row>
-              <v-chip
-                v-for="user in sessionDetails.users"
-                :key="user.name"
-                color="success darken-1"
-                class="ml-2 mb-2"
-                :outlined="!isCurrentUser(user)"
-              >
-                <v-icon left>
-                  mdi-account
-                </v-icon>
-                {{ user.name }}
-              </v-chip>
-            </v-row>
-          </v-col>
-        </template>
-        <template v-else>
-          <v-alert dense text type="info" width="100%">
-            Select a session
-          </v-alert>
-        </template>
-      </template>
+      <session-details :sessionId="selectedSessionId" />
     </v-col>
   </v-container>
 </template>
@@ -144,24 +91,24 @@ import SessionplanModule from '@/store/modules/sessionplan-module'
 import SessionModule from '@/store/modules/session-module'
 
 import { SessionplanDetailModel } from '@/models/data/sessionplan'
-import { SessionModel, SessionUserModel } from '@/models/data/session'
 
-import { vuetifyDate, displayDate } from '@/helpers/date-format-helper'
+import { vuetifyDate } from '@/helpers/date-format-helper'
 
-@Component
+import SessionDetails from './SessionDetails.vue'
+
+@Component({
+  components: {
+    SessionDetails,
+  },
+})
 export default class Details extends Vue {
   private loading: boolean = false
-  private loadingSession: boolean = false
-  private loadingParticipate: boolean = false
 
   private shareDialog: boolean = false
   private copied: boolean = false
   private copiedMessage: string = ''
 
   private selectedDate: string = ''
-
-  // private participateCurrent: boolean = false
-  private participateKey: number = 0
 
   private alert: AlertModule = getModule(AlertModule, this.$store)
   private auth: AuthModule = getModule(AuthModule, this.$store)
@@ -189,8 +136,8 @@ export default class Details extends Vue {
     return this.sessionplan.currentOpen
   }
 
-  get selectedSessionDate(): SessionModel | undefined {
-    return this.details.sessions.find(s => vuetifyDate(s.date) == this.selectedDate)
+  get selectedSessionId(): string | undefined {
+    return this.details.sessions.find(s => vuetifyDate(s.date) == this.selectedDate)?.id
   }
 
   get sessionDates(): string[] {
@@ -201,16 +148,8 @@ export default class Details extends Vue {
     return this.auth.authState.loggedIn
   }
 
-  get authUserId(): string | null {
-    return this.auth.authState.userId
-  }
-
   get sharedLink(): string {
     return window.location.href
-  }
-
-  get sessionDetails(): SessionModel {
-    return this.session.currentOpen
   }
 
   get guestName(): string {
@@ -219,102 +158,6 @@ export default class Details extends Vue {
 
   set guestName(name: string) {
     this.session.updateGuestName(name)
-  }
-
-  get participateCheckboxDisabled() {
-    return this.loadingParticipate || (!this.isAuthenticated && this.guestName == '')
-  }
-
-  get participateCurrent() {
-    if (this.isAuthenticated) {
-      return this.session.currentOpen.users.some(u => u.id == this.authUserId)
-    }
-    return this.session.currentOpen.users.some(u => u.name == this.guestName)
-  }
-
-  isCurrentUser(user: SessionUserModel): boolean {
-    if (user.id) {
-      return user.id == this.authUserId
-    }
-    return user.name == this.guestName
-  }
-
-  openSessionDetails(): void {
-    if (this.selectedSessionDate) {
-      this.loadingSession = true
-      this.alert.reset()
-
-      this.session
-        .fetch(this.selectedSessionDate.id)
-        .then(
-          (response: SessionModel) => {},
-          error => {
-            this.alert.setMessage(error)
-            this.alert.setType('error')
-          }
-        )
-        .finally(() => {
-          this.loadingSession = false
-        })
-    }
-  }
-
-  toggleParticipationState(checked: boolean) {
-    if (checked) {
-      this.participateSession()
-    } else {
-      this.cancelSession()
-    }
-  }
-
-  participateSession(): void {
-    this.loadingParticipate = true
-    this.alert.reset()
-
-    this.session
-      .register()
-      .then(
-        (_response: SessionModel) => {
-          const date = displayDate(this.session.currentOpen.date)
-          this.alert.setMessage('Participate the game on ' + date)
-          this.alert.setType('success')
-        },
-        error => {
-          this.alert.setMessage(error)
-          this.alert.setType('error')
-          this.participateKey++
-        }
-      )
-      .finally(() => {
-        this.loadingParticipate = false
-      })
-  }
-
-  cancelSession(): void {
-    this.loadingParticipate = true
-    this.alert.reset()
-
-    this.session
-      .cancel()
-      .then(
-        (_response: SessionModel) => {
-          const date = displayDate(this.session.currentOpen.date)
-          this.alert.setMessage('Left the game for ' + date)
-          this.alert.setType('success')
-        },
-        error => {
-          this.alert.setMessage(error)
-          this.alert.setType('error')
-          this.participateKey++
-        }
-      )
-      .finally(() => {
-        this.loadingParticipate = false
-      })
-  }
-
-  sessionDetailTitle(date: string): string {
-    return displayDate(date)
   }
 
   copyLink() {
