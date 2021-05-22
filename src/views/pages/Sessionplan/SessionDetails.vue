@@ -1,13 +1,17 @@
 <template>
   <v-container fluid class="pt-0 px-1">
-    <v-divider v-if="!loading && !loadingParticipate" class="my-4" />
-    <yr-progress-linear v-else class="mt-4 mb-3" />
+    <v-divider v-show="!loading && !loadingParticipate" class="my-4" />
+    <yr-progress-linear
+      v-show="loading || loadingParticipate"
+      class="mt-4 mb-3"
+      data-cy="session-progress-loading"
+    />
 
     <template v-if="!loading">
       <template v-if="sessionId">
         <v-col>
           <v-row>
-            <h4>
+            <h4 data-cy="session-title">
               {{ sessionDetailTitle(sessionDetails.date) }}
             </h4>
             <v-spacer />
@@ -19,14 +23,24 @@
               :disabled="participateCheckboxDisabled"
               :key="participateKey"
               @change="toggleParticipationState"
+              data-cy="participate-checkbox"
             >
             </v-checkbox>
           </v-row>
           <v-row v-show="sessionDetails.users.length > 0">
-            <v-subheader> {{ sessionDetails.users.length }} Participants: </v-subheader>
+            <v-subheader data-cy="participants-subheader">
+              {{ sessionDetails.users.length }} Participants:
+            </v-subheader>
           </v-row>
           <v-row v-show="sessionDetails.users.length == 0">
-            <v-alert dense text type="info" width="100%" class="mt-3">
+            <v-alert
+              dense
+              text
+              type="info"
+              width="100%"
+              class="mt-3"
+              data-cy="no-participants-alert"
+            >
               No participants on this session
             </v-alert>
           </v-row>
@@ -34,9 +48,10 @@
             <v-chip
               v-for="user in sessionDetails.users"
               :key="user.name"
+              :outlined="!isCurrentUser(user)"
               color="success darken-1"
               class="ml-2 mb-2"
-              :outlined="!isCurrentUser(user)"
+              :data-cy="'participant-' + user.name + '-chip'"
             >
               <v-icon left>
                 mdi-account
@@ -47,7 +62,7 @@
         </v-col>
       </template>
       <template v-else>
-        <v-alert dense text type="info" width="100%">
+        <v-alert dense text type="info" width="100%" data-cy="select-session-alert">
           Select a session
         </v-alert>
       </template>

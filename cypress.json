@@ -12,8 +12,11 @@
 
     "sessionplan/auth-create.spec.ts",
     "sessionplan/auth-open.spec.ts",
+    "sessionplan/auth-share.spec.ts",
 
-    "session/auth-share.spec.ts",
+    "session/auth-open.spec.ts",
+    "session/auth-participate.spec.ts",
+    "session/auth-cancel.spec.ts",
 
     "sessionplan/auth-delete.spec.ts",
 
