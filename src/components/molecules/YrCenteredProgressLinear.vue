@@ -15,7 +15,7 @@ import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 
 @Component
-export default class YrDialogCard extends Vue {
+export default class YrCenteredProgressLinear extends Vue {
   @Prop() text?: string
 }
 </script>
