@@ -8,6 +8,7 @@ import BoardGameModule from './modules/boardgame-module'
 import AlertModule from './modules/alert-module'
 import SessionplanModule from './modules/sessionplan-module'
 import SessionModule from './modules/session-module'
+import SuggestionModule from './modules/suggestion-module'
 
 Vue.use(Vuex)
 
@@ -20,6 +21,7 @@ const store = new Vuex.Store({
     boardgame: BoardGameModule,
     sessionplan: SessionplanModule,
     session: SessionModule,
+    suggestion: SuggestionModule,
 
     alert: AlertModule,
   },
