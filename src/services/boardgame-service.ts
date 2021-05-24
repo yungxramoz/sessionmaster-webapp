@@ -6,11 +6,13 @@ import authHeader from './auth-header'
 
 const API_URL_BOARDGAME = process.env.VUE_APP_BASE_API_URL + 'boardgames/'
 const API_URL_COLLECTION = process.env.VUE_APP_BASE_API_URL + 'users/'
+const API_URL_SUGGESTION = process.env.VUE_APP_BASE_API_URL + 'sessions/'
 
 class BoardGameService {
-  async getBoardGames(name?: string): Promise<BoardGameModel[]> {
+  async getBoardGames(name?: string, playerCount?: number): Promise<BoardGameModel[]> {
     const params = {
       name: name,
+      playerCount: playerCount,
     }
     const response = await axios.get(API_URL_BOARDGAME, { params })
     return response.data
@@ -23,6 +25,13 @@ class BoardGameService {
 
   async getCollection(userId: string): Promise<BoardGameModel[]> {
     const response = await axios.get(`${API_URL_COLLECTION}${userId}/boardgames`, {
+      headers: authHeader(),
+    })
+    return response.data
+  }
+
+  async getSuggestion(sessionId: string): Promise<BoardGameModel[]> {
+    const response = await axios.get(`${API_URL_SUGGESTION}${sessionId}/boardgames`, {
       headers: authHeader(),
     })
     return response.data
