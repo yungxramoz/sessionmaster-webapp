@@ -19,7 +19,7 @@
             class="ma-1"
             contain
             :aspect-ratio="1"
-            :src="boardgame.thumbUrl"
+            :src="boardgame.imageUrl"
             :lazy-src="boardgame.thumbUrl"
             @click="openDetails(boardgame.id)"
           >
