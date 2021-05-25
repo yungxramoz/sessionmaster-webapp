@@ -111,7 +111,7 @@ export default class Manager extends Vue {
 
   created() {
     this.loading = true
-    this.alert.resetAlert()
+    this.alert.reset()
 
     this.sessionplan
       .fetchOwned()

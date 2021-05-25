@@ -151,7 +151,7 @@ export default class Collection extends Vue {
 
   created() {
     this.loadingCollection = true
-    this.alert.resetAlert()
+    this.alert.reset()
     this.boardGame
       .fetchCollection(this.auth.userId)
       .then(
