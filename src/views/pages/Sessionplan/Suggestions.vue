@@ -39,7 +39,12 @@
         </v-col>
       </v-row>
       <v-row>
-        <yr-btn block>
+        <yr-btn
+          block
+          :loading="loadingOthers"
+          :disabled="loadingOthers || loading"
+          @click="loadSuggestions"
+        >
           More suggestions
           <v-icon class="ml-2">
             mdi-arrow-right
@@ -47,13 +52,69 @@
         </yr-btn>
       </v-row>
     </v-col>
+
+    <v-dialog
+      v-model="otherSuggestionsDialog"
+      scrollable
+      fullscreen
+      hide-overlay
+      transition="slide-x-reverse-transition"
+      data-cy="suggestion-dialog"
+    >
+      <yr-dialog-card header-color="primary" data-cy="add-content">
+        <template #title>
+          <yr-icon-btn
+            color="white"
+            @click="otherSuggestionsDialog = false"
+            data-cy="back-to-sessionplan-btn"
+          >
+            mdi-arrow-left
+          </yr-icon-btn>
+          <span class="white--text ml-4"></span>
+        </template>
+
+        <template #content>
+          <v-container>
+            <v-list two-line data-cy="suggestion-list">
+              <v-list-item v-for="suggestion in otherSuggestions" :key="'other-' + suggestion.id">
+                <v-list-item-avatar tile>
+                  <v-img
+                    contain
+                    :aspect-ratio="1"
+                    :src="suggestion.thumbUrl"
+                    :lazy-src="suggestion.thumbUrl"
+                  >
+                    <template v-slot:placeholder>
+                      <v-row class="fill-height ma-0" align="center" justify="center">
+                        <v-progress-circular
+                          indeterminate
+                          color="grey lighten-5"
+                        ></v-progress-circular>
+                      </v-row>
+                    </template>
+                  </v-img>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ suggestion.name }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    <v-icon>mdi-account-group</v-icon>
+                    {{ suggestion.minPlayers }}-{{ suggestion.maxPlayers }} Players
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-container>
+        </template>
+      </yr-dialog-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { getModule } from 'vuex-module-decorators'
-import { Debounce } from 'vue-debounce-decorator'
 
 import AlertModule from '@/store/modules/alert-module'
 import SuggestionModule from '@/store/modules/suggestion-module'
@@ -64,6 +125,9 @@ import { BoardGameModel } from '@/models/data/boardgame'
 @Component
 export default class Suggestions extends Vue {
   private loading: boolean = false
+  private loadingOthers: boolean = false
+
+  private otherSuggestionsDialog: boolean = false
 
   private alert: AlertModule = getModule(AlertModule, this.$store)
   private suggestion: SuggestionModule = getModule(SuggestionModule, this.$store)
@@ -90,6 +154,30 @@ export default class Suggestions extends Vue {
       )
       .finally(() => {
         this.loading = false
+      })
+  }
+
+  get otherSuggestions(): BoardGameModel[] {
+    return this.suggestion.allOthers
+  }
+
+  loadSuggestions() {
+    this.loadingOthers = true
+    this.alert.reset()
+
+    this.suggestion
+      .fetchAllSuggestions(this.session.currentOpen.users.length)
+      .then(
+        _ => {
+          this.otherSuggestionsDialog = true
+        },
+        error => {
+          this.alert.setMessage(error)
+          this.alert.setType('error')
+        }
+      )
+      .finally(() => {
+        this.loadingOthers = false
       })
   }
 }
