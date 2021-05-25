@@ -59,64 +59,9 @@
               {{ user.name }}
             </v-chip>
           </v-row>
-          <yr-progress-linear
-            v-show="loadingInCollectionSuggestion || loadingParticipate"
-            class="mt-4 mb-3"
-            data-cy="session-progress-loading"
-          />
-          <template
-            v-if="
-              !loadingInCollectionSuggestion &&
-                !loadingParticipate &&
-                sessionDetails.users.length != 0
-            "
-          >
-            <v-row v-show="suggestions.length > 0" no-gutters>
-              <v-col cols="12" class="mt-3">
-                <v-divider class="mt-3" />
-                <v-subheader>In participants collection:</v-subheader>
-              </v-col>
-              <v-col
-                cols="4"
-                md="3"
-                lg="2"
-                xl="1"
-                class="pa-1 my-2 text-center"
-                v-for="suggestion in suggestions"
-                :key="suggestion.id"
-              >
-                <v-img
-                  contain
-                  :aspect-ratio="1"
-                  :src="suggestion.imageUrl"
-                  :lazy-src="suggestion.thumbUrl"
-                >
-                  <template v-slot:placeholder>
-                    <v-row class="fill-height ma-0" align="center" justify="center">
-                      <v-progress-circular
-                        indeterminate
-                        color="grey lighten-5"
-                      ></v-progress-circular>
-                    </v-row>
-                  </template>
-                </v-img>
-                <v-icon dense class="pr-1">
-                  mdi-account-group
-                </v-icon>
-                <span class="text-caption"
-                  >{{ suggestion.minPlayers }}-{{ suggestion.maxPlayers }}</span
-                >
-              </v-col>
-            </v-row>
-            <v-row>
-              <yr-btn block>
-                More suggestions
-                <v-icon class="ml-2">
-                  mdi-arrow-right
-                </v-icon>
-              </yr-btn>
-            </v-row>
-          </template>
+          <v-row v-if="sessionDetails.users.length != 0">
+            <suggestions :sessionId="sessionId" />
+          </v-row>
         </v-col>
       </template>
       <template v-else>
@@ -131,30 +76,31 @@
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
 import { getModule } from 'vuex-module-decorators'
-import { Debounce } from 'vue-debounce-decorator'
 
 import AlertModule from '@/store/modules/alert-module'
 import AuthModule from '@/store/modules/auth-module'
 import SessionModule from '@/store/modules/session-module'
-import SuggestionModule from '@/store/modules/suggestion-module'
 
 import { SessionModel, SessionUserModel } from '@/models/data/session'
-import { BoardGameModel } from '@/models/data/boardgame'
 
 import { displayDate } from '@/helpers/date-format-helper'
 
-@Component
-export default class Session extends Vue {
+import Suggestions from './Suggestions.vue'
+
+@Component({
+  components: {
+    Suggestions,
+  },
+})
+export default class SessionDetails extends Vue {
   private loading: boolean = false
   private loadingParticipate: boolean = false
-  private loadingInCollectionSuggestion: boolean = false
 
   private participateKey: number = 0
 
   private alert: AlertModule = getModule(AlertModule, this.$store)
   private auth: AuthModule = getModule(AuthModule, this.$store)
   private session: SessionModule = getModule(SessionModule, this.$store)
-  private suggestion: SuggestionModule = getModule(SuggestionModule, this.$store)
 
   @Prop() sessionId?: string
   @Watch('sessionId')
@@ -166,12 +112,7 @@ export default class Session extends Vue {
       this.session
         .fetch(this.sessionId)
         .then(
-          (response: SessionModel) => {
-            if (response.id && response.users.length > 0) {
-              this.loadingInCollectionSuggestion = true
-              this.fetchSuggestionInCollection(response.id)
-            }
-          },
+          (_: SessionModel) => {},
           error => {
             this.alert.setMessage(error)
             this.alert.setType('error')
@@ -193,10 +134,6 @@ export default class Session extends Vue {
 
   get hasDetails(): boolean {
     return Object.keys(this.sessionDetails).length !== 0
-  }
-
-  get suggestions(): BoardGameModel[] {
-    return this.suggestion.allInCollection
   }
 
   get guestName(): string {
@@ -277,24 +214,6 @@ export default class Session extends Vue {
 
   sessionDetailTitle(date: string): string {
     return displayDate(date)
-  }
-
-  @Debounce(700)
-  fetchSuggestionInCollection(sessionId: string) {
-    this.loadingInCollectionSuggestion = true
-    this.alert.reset()
-    this.suggestion
-      .fetchBySession(sessionId)
-      .then(
-        _ => {},
-        error => {
-          this.alert.setMessage(error)
-          this.alert.setType('error')
-        }
-      )
-      .finally(() => {
-        this.loadingInCollectionSuggestion = false
-      })
   }
 }
 </script>

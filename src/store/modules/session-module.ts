@@ -45,6 +45,14 @@ class SessionModule extends VuexModule {
     this.sessionState.guestName = name
   }
 
+  @Mutation
+  public resetState(): void {
+    this.sessionState = {
+      currentSession: null,
+      guestName: null,
+    }
+  }
+
   @Action({ rawError: true })
   public fetch(id: string): Promise<any> {
     return SessionService.getSession(id).then(
@@ -95,6 +103,11 @@ class SessionModule extends VuexModule {
   @Action({ rawError: true })
   public updateGuestName(name: string): void {
     this.updateGuestNameSuccess(name)
+  }
+
+  @Action({ rawError: true })
+  public reset() {
+    this.resetState()
   }
 
   get currentOpen(): SessionModel {
