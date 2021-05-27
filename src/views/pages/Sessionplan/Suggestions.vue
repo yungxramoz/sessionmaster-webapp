@@ -137,9 +137,6 @@ export default class Suggestions extends Vue {
     return this.suggestion.allInCollection
   }
 
-  // @Prop() sessionId!: string
-
-  // @Debounce(700)
   created() {
     this.loading = true
     this.alert.reset()
