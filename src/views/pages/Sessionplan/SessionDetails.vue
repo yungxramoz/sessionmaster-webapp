@@ -60,7 +60,7 @@
             </v-chip>
           </v-row>
           <v-row v-if="sessionDetails.users.length != 0">
-            <suggestions :sessionId="sessionId" />
+            <suggestions :sessionId="sessionId" :key="suggestionKey" />
           </v-row>
         </v-col>
       </template>
@@ -97,6 +97,7 @@ export default class SessionDetails extends Vue {
   private loadingParticipate: boolean = false
 
   private participateKey: number = 0
+  private suggestionKey: number = 0
 
   private alert: AlertModule = getModule(AlertModule, this.$store)
   private auth: AuthModule = getModule(AuthModule, this.$store)
@@ -120,6 +121,7 @@ export default class SessionDetails extends Vue {
         )
         .finally(() => {
           this.loading = false
+          this.suggestionKey++
         })
     }
   }
@@ -186,6 +188,7 @@ export default class SessionDetails extends Vue {
       )
       .finally(() => {
         this.loadingParticipate = false
+        this.suggestionKey++
       })
   }
 
@@ -209,6 +212,7 @@ export default class SessionDetails extends Vue {
       )
       .finally(() => {
         this.loadingParticipate = false
+        this.suggestionKey++
       })
   }
 
