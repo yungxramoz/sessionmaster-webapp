@@ -121,7 +121,6 @@ export default class SessionDetails extends Vue {
         )
         .finally(() => {
           this.loading = false
-          this.suggestionKey++
         })
     }
   }
@@ -179,6 +178,7 @@ export default class SessionDetails extends Vue {
           const date = displayDate(this.session.currentOpen.date)
           this.alert.setMessage('Participate the game on ' + date)
           this.alert.setType('success')
+          this.suggestionKey++
         },
         error => {
           this.alert.setMessage(error)
@@ -188,7 +188,6 @@ export default class SessionDetails extends Vue {
       )
       .finally(() => {
         this.loadingParticipate = false
-        this.suggestionKey++
       })
   }
 
@@ -203,6 +202,7 @@ export default class SessionDetails extends Vue {
           const date = displayDate(this.session.currentOpen.date)
           this.alert.setMessage('Left the game for ' + date)
           this.alert.setType('success')
+          this.suggestionKey++
         },
         error => {
           this.alert.setMessage(error)
@@ -212,7 +212,6 @@ export default class SessionDetails extends Vue {
       )
       .finally(() => {
         this.loadingParticipate = false
-        this.suggestionKey++
       })
   }
 
