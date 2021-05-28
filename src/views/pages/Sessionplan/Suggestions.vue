@@ -129,14 +129,6 @@ export default class Suggestions extends Vue {
   }
 
   created() {
-    this.loadSuggestions()
-  }
-
-  get otherSuggestions(): BoardGameModel[] {
-    return this.suggestion.allOthers
-  }
-
-  loadSuggestions() {
     this.loading = true
 
     this.suggestion
@@ -153,6 +145,30 @@ export default class Suggestions extends Vue {
       )
       .finally(() => {
         this.loading = false
+      })
+  }
+
+  get otherSuggestions(): BoardGameModel[] {
+    return this.suggestion.allOthers
+  }
+
+  loadSuggestions() {
+    this.loadingOthers = true
+    this.alert.reset()
+
+    this.suggestion
+      .fetchAllSuggestions(this.session.currentOpen.users.length)
+      .then(
+        _ => {
+          this.otherSuggestionsDialog = true
+        },
+        error => {
+          this.alert.setMessage(error)
+          this.alert.setType('error')
+        }
+      )
+      .finally(() => {
+        this.loadingOthers = false
       })
   }
 }
