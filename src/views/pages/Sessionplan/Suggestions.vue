@@ -5,7 +5,9 @@
       <v-col cols="12" class="mt-3">
         <v-divider />
         <v-row no-gutters>
-          <v-subheader>In participants collection:</v-subheader>
+          <v-subheader data-cy="collection-suggestion-subheader">
+            In participants collection:
+          </v-subheader>
         </v-row>
       </v-col>
       <v-col
@@ -17,7 +19,13 @@
         v-for="suggestion in suggestions"
         :key="suggestion.id"
       >
-        <v-img contain :aspect-ratio="1" :src="suggestion.imageUrl" :lazy-src="suggestion.thumbUrl">
+        <v-img
+          contain
+          :aspect-ratio="1"
+          :src="suggestion.imageUrl"
+          :lazy-src="suggestion.thumbUrl"
+          :data-cy="'collection-' + suggestion.name"
+        >
           <template v-slot:placeholder>
             <v-row class="fill-height ma-0" align="center" justify="center">
               <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
@@ -27,7 +35,13 @@
         <v-icon dense class="pr-1">
           mdi-account-group
         </v-icon>
-        <span class="text-caption">{{ suggestion.minPlayers }}-{{ suggestion.maxPlayers }}</span>
+        <span
+          class="text-caption"
+          :data-min-cy="suggestion.minPlayers"
+          :data-max-cy="suggestion.maxPlayers"
+        >
+          {{ suggestion.minPlayers }}-{{ suggestion.maxPlayers }}
+        </span>
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -36,6 +50,7 @@
         :loading="loadingOthers"
         :disabled="loadingOthers || loading"
         @click="loadSuggestions"
+        data-cy="other-suggestion-btn"
       >
         More suggestions
         <v-icon class="ml-2">
@@ -52,7 +67,7 @@
       transition="slide-x-reverse-transition"
       data-cy="suggestion-dialog"
     >
-      <yr-dialog-card header-color="primary" data-cy="add-content">
+      <yr-dialog-card header-color="primary" data-cy="suggestion-content">
         <template #title>
           <yr-icon-btn
             color="white"
@@ -104,7 +119,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { getModule } from 'vuex-module-decorators'
 
 import AlertModule from '@/store/modules/alert-module'

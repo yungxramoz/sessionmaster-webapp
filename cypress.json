@@ -8,7 +8,6 @@
     "user/update-password.spec.ts",
 
     "collection/add.spec.ts",
-    "collection/remove.spec.ts",
 
     "sessionplan/auth-create.spec.ts",
     "sessionplan/auth-open.spec.ts",
@@ -16,7 +15,10 @@
 
     "session/auth-open.spec.ts",
     "session/auth-participate.spec.ts",
+    "session/auth-suggestion.spec.ts",
     "session/auth-cancel.spec.ts",
+
+    "collection/remove.spec.ts",
 
     "sessionplan/auth-delete.spec.ts",
 
@@ -27,7 +29,7 @@
     "lastname": "Tester",
     "username": "cytester",
     "password": "CyTester12345",
-    "boardGameName": "Rising Sun",
+    "boardGameName": "Scythe",
     "sessionplanName": "Cypress Test Plan"
   }
 }
