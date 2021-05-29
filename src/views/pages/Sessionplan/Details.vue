@@ -10,7 +10,7 @@
             mdi-arrow-left
           </yr-icon-btn>
         </v-col>
-        <v-col class="text-center">
+        <v-col class="text-center text-truncate">
           <h1 class="mb-5 text-h6" data-cy="details-title">{{ details.name }}</h1>
         </v-col>
         <v-col cols="auto">
@@ -130,6 +130,10 @@ export default class Details extends Vue {
       .finally(() => {
         this.loading = false
       })
+  }
+
+  mounted() {
+    this.session.reset()
   }
 
   get details(): SessionplanDetailModel {

@@ -170,7 +170,7 @@ export default class Wizard extends Vue {
 
   createAct() {
     this.loading = true
-    this.alert.resetAlert()
+    this.alert.reset()
 
     this.sessionplan
       .create(this.addSessionplan)

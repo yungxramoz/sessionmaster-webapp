@@ -8,7 +8,7 @@
     />
 
     <template v-if="!loading">
-      <template v-if="sessionId">
+      <template v-if="hasDetails">
         <v-col>
           <v-row>
             <h4 data-cy="session-title">
@@ -59,6 +59,9 @@
               {{ user.name }}
             </v-chip>
           </v-row>
+          <v-row v-if="sessionDetails.users.length != 0">
+            <suggestions :sessionId="sessionId" :key="suggestionKey" />
+          </v-row>
         </v-col>
       </template>
       <template v-else>
@@ -82,12 +85,19 @@ import { SessionModel, SessionUserModel } from '@/models/data/session'
 
 import { displayDate } from '@/helpers/date-format-helper'
 
-@Component
-export default class Session extends Vue {
+import Suggestions from './Suggestions.vue'
+
+@Component({
+  components: {
+    Suggestions,
+  },
+})
+export default class SessionDetails extends Vue {
   private loading: boolean = false
   private loadingParticipate: boolean = false
 
   private participateKey: number = 0
+  private suggestionKey: number = 0
 
   private alert: AlertModule = getModule(AlertModule, this.$store)
   private auth: AuthModule = getModule(AuthModule, this.$store)
@@ -95,7 +105,7 @@ export default class Session extends Vue {
 
   @Prop() sessionId?: string
   @Watch('sessionId')
-  openSessionDetails(id?: string): void {
+  openSessionDetails(): void {
     if (this.sessionId) {
       this.loading = true
       this.alert.reset()
@@ -103,7 +113,7 @@ export default class Session extends Vue {
       this.session
         .fetch(this.sessionId)
         .then(
-          (_response: SessionModel) => {},
+          (_: SessionModel) => {},
           error => {
             this.alert.setMessage(error)
             this.alert.setType('error')
@@ -121,6 +131,10 @@ export default class Session extends Vue {
 
   get sessionDetails(): SessionModel {
     return this.session.currentOpen
+  }
+
+  get hasDetails(): boolean {
+    return Object.keys(this.sessionDetails).length !== 0
   }
 
   get guestName(): string {
@@ -164,6 +178,7 @@ export default class Session extends Vue {
           const date = displayDate(this.session.currentOpen.date)
           this.alert.setMessage('Participate the game on ' + date)
           this.alert.setType('success')
+          this.suggestionKey++
         },
         error => {
           this.alert.setMessage(error)
@@ -187,6 +202,7 @@ export default class Session extends Vue {
           const date = displayDate(this.session.currentOpen.date)
           this.alert.setMessage('Left the game for ' + date)
           this.alert.setType('success')
+          this.suggestionKey++
         },
         error => {
           this.alert.setMessage(error)

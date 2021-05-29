@@ -5,12 +5,15 @@
     </template>
     <template v-else>
       <v-row no-gutters align="center">
-        <v-col cols="4" class="text-center">
+        <v-col cols="4" md="3" lg="2" xl="1" class="text-center">
           <add-board-game-btn />
         </v-col>
 
         <v-col
           cols="4"
+          md="3"
+          lg="2"
+          xl="1"
           class="d-flex child-flex boardgame"
           v-for="boardgame in collection"
           :key="boardgame.id"
@@ -19,7 +22,7 @@
             class="ma-1"
             contain
             :aspect-ratio="1"
-            :src="boardgame.thumbUrl"
+            :src="boardgame.imageUrl"
             :lazy-src="boardgame.thumbUrl"
             @click="openDetails(boardgame.id)"
           >
@@ -148,7 +151,7 @@ export default class Collection extends Vue {
 
   created() {
     this.loadingCollection = true
-    this.alert.resetAlert()
+    this.alert.reset()
     this.boardGame
       .fetchCollection(this.auth.userId)
       .then(

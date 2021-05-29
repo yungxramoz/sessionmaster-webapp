@@ -38,8 +38,14 @@ describe('Register to a session as authenticated user', () => {
   it('registers to a session', () => {
     cy.server()
     cy.route('POST', 'api/sessions/**/register').as('register')
+    cy.route('api/sessions/**/boardgames').as('suggestions')
 
     const sessionName = new Date().toDateString()
+
+    cy.get('[data-cy="suggestions-progress-loading"]').should('be.not.visible')
+    cy.get('[data-cy="collection-suggestion-subheader"]').should('be.not.visible')
+    cy.get('[data-cy="other-suggestion-btn"]').should('be.not.visible')
+    cy.get('[data-cy="suggestion-dialog"]').should('be.not.visible')
 
     cy.get('[data-cy="participate-checkbox"]')
       .should('not.be.checked')
@@ -49,6 +55,9 @@ describe('Register to a session as authenticated user', () => {
     cy.get('[data-cy="session-progress-loading"]').should('be.visible')
 
     cy.wait('@register')
+
+    cy.get('[data-cy="suggestions-progress-loading"]').should('be.visible')
+    cy.get('[data-cy="other-suggestion-btn"]').should('be.disabled')
 
     cy.get('[data-cy="session-progress-loading"]').should('not.be.visible')
     cy.get('[data-cy="participate-checkbox"]').should('be.checked')
